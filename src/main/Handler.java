@@ -68,7 +68,7 @@ public class Handler {
                 //complete black pixel
                 if(red==0 && green==0 && blue==0) addTile(new Wall(x*64,y*64,64,64,true,Id.wall,this));
                 //complete blue pixel
-                if(red==0 && green==0 && blue==255) addEntity(new Player(x*64,y*64,64,64,false,Id.wall,this));
+                if(red==0 && green==0 && blue==255) addEntity(new Player(x*64,y*64,64,64,false,Id.player,this));
             }
         }
     }

@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+import entity.Player;
 import graphics.Sprite;
 import graphics.SpriteSheet;
 import input.KeyInput;
@@ -64,13 +65,14 @@ public class Main extends Canvas implements Runnable{
         addKeyListener(new KeyInput());
 
         groundblock = new Sprite(sheet,1,1);
+        //player = new Sprite[8];
 
         for(int i=0; i<player.length; i++){
             player[i] = new Sprite(sheet,i+1,16);
         }
 
         try {
-            image = ImageIO.read(getClass().getResource("/leveltest0.png"));
+            image = ImageIO.read(getClass().getResource("/leveltest1.png"));
         } catch (IOException e){
             e.printStackTrace();
         }
