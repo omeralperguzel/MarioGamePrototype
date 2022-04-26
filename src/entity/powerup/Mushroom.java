@@ -18,13 +18,9 @@ public class Mushroom extends Entity {
 
         int dir = random.nextInt(2);
 
-        switch(dir){
-            case 0:
-            setVelX(-3);
-            break;
-            case 1:
-            setVelX(3);
-            break;
+        switch (dir) {
+            case 0 -> setVelX(-3);
+            case 1 -> setVelX(3);
         }
     }
 
@@ -44,14 +40,10 @@ public class Mushroom extends Entity {
                     setVelY(0);
                     //y = t.getY()-t.height;
                     if (falling) falling = false;
-
                 }
-                else {
-                    if (!falling) {
+                else if (!falling) {
                         gravity = 0.8;
                         falling = true;
-                    }
-
                 }
                 if (getBoundsLeft().intersects(t.getBounds())) {
                     setVelX(5);

@@ -40,14 +40,14 @@ public class Player<frameDelay> extends Entity {
         else animate = false;
         //Removed for falling physics
         for (Tile t : handler.tile) {
-            if (!t.solid) break;
-            if (t.getId() == Id.wall) {
+            //if (!t.solid) break;
+            //if (t.getId() == Id.wall) {
                 if (getBoundsTop().intersects(t.getBounds())) {
                     setVelY(0);
                     //y = t.getY()+t.height;
                     if(jumping){
                         jumping = false;
-                        gravity = 5.0;
+                        gravity -= 0.4;
                         falling = true;
                     }
                     if(t.getId()==Id.powerUp){
@@ -77,7 +77,7 @@ public class Player<frameDelay> extends Entity {
                         setVelX(0);
                         x = t.getX() - t.width;
                     }
-                }
+                //}
             }
         //EXPANSION FOR MUSHROOM
             for(int i=0;i<handler.entity.size();i++){

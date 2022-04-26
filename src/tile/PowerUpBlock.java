@@ -18,6 +18,7 @@ public class PowerUpBlock extends Tile{
 
     public PowerUpBlock(int x, int y, int width, int height, boolean solid, Id id, Handler handler, Sprite powerUp) {
         super(x, y, width, height, solid, id, handler);
+        this.powerUp = powerUp;
     }
 
     public void render(Graphics g) {

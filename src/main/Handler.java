@@ -31,8 +31,8 @@ public class Handler {
     }
 
     public void tick() {
-        for(Entity en:entity){
-            en.tick();
+        for(int i=0;i<entity.size();i++){
+            entity.get(i).tick();
         }
         for(Tile ti:tile){
             ti.tick();

@@ -31,7 +31,7 @@ public class Main extends Canvas implements Runnable{
     public static Camera cam;
 
     public static Sprite groundblock;
-    public static Sprite[] player = new Sprite[10];
+    public static Sprite[] player;
     public static Sprite mushroom;
     public static Sprite powerUp;
     public static Sprite usedPowerUp;
@@ -71,7 +71,7 @@ public class Main extends Canvas implements Runnable{
         addKeyListener(new KeyInput());
 
         groundblock = new Sprite(sheet,1,1);
-        //player = new Sprite[8];
+        player = new Sprite[10];
         //POWER UP SPRITES
         powerUp = new Sprite(sheet, 3,1);
         usedPowerUp = new Sprite(sheet, 1,1);

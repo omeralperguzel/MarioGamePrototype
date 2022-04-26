@@ -79,7 +79,7 @@ public abstract class Entity {
         return new Rectangle(getX(),getY(),width,height);
     }
     public Rectangle getBoundsTop(){
-        return new Rectangle(getX()+10,getY()+10,width-20,5);
+        return new Rectangle(getX()+10,getY(),width-20,5);
     }
     public Rectangle getBoundsBottom(){
         return new Rectangle(getX()+10,getY()+width-5,width-20,5);
