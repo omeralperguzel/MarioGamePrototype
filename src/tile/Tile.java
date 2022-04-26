@@ -10,6 +10,7 @@ public abstract class Tile {
     public int width, height;
 
     public boolean solid;
+    public boolean activated = false;
 
     public int velX, velY;
 

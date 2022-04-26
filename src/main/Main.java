@@ -24,6 +24,8 @@ public class Main extends Canvas implements Runnable{
     private boolean running = false;
     private BufferedImage image;
 
+    private static BufferedImage background;
+
     public static Handler handler;
     public static SpriteSheet sheet;
     public static Camera cam;
@@ -31,6 +33,8 @@ public class Main extends Canvas implements Runnable{
     public static Sprite groundblock;
     public static Sprite[] player = new Sprite[10];
     public static Sprite mushroom;
+    public static Sprite powerUp;
+    public static Sprite usedPowerUp;
     public static Sprite[] goomba;
     //had to think about that power up one day due to 2 character reasons
 
@@ -68,6 +72,9 @@ public class Main extends Canvas implements Runnable{
 
         groundblock = new Sprite(sheet,1,1);
         //player = new Sprite[8];
+        //POWER UP SPRITES
+        powerUp = new Sprite(sheet, 3,1);
+        usedPowerUp = new Sprite(sheet, 1,1);
         mushroom = new Sprite(sheet,2, 1);
         goomba = new Sprite[8];
         //PLAYER 1 SPRITES
@@ -81,6 +88,8 @@ public class Main extends Canvas implements Runnable{
 
         try {
             image = ImageIO.read(getClass().getResource("/leveltest0.png"));
+            background = ImageIO.read(getClass().getResource("/background.png"));
+            //background = ImageIO.read(getClass().getResource("/backgroundtest1.jpg"));
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -133,9 +142,10 @@ public class Main extends Canvas implements Runnable{
                 return;
             }
             Graphics g = bs.getDrawGraphics();
-            g.setColor(Color.BLACK);
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+            // g.setColor(Color.BLACK);
             //g.setColor(new Color(125,125,185));
-            g.fillRect(0,0,getWidth(),getHeight());
+            //g.fillRect(0,0,getWidth(),getHeight());
             g.translate(cam.getX(),cam.getY());
             handler.render(g);
             //g.setColor(Color.RED);

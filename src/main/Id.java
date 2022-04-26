@@ -1,5 +1,5 @@
 package main;
 
 public enum Id {
-    player, wall, mushroom, goomba;
+    player, wall, mushroom, goomba, powerUp;
 }

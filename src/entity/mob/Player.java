@@ -50,6 +50,11 @@ public class Player<frameDelay> extends Entity {
                         gravity = 5.0;
                         falling = true;
                     }
+                    if(t.getId()==Id.powerUp){
+                        if(getBoundsTop().intersects(t.getBounds())){
+                            t.activated = true;
+                        }
+                    }
                 }
                 if (getBoundsBottom().intersects(t.getBounds())) {
                     setVelY(0);
@@ -90,7 +95,10 @@ public class Player<frameDelay> extends Entity {
                     }
                 }
                 else if(e.getId()==Id.goomba){
-                    if(getBounds().intersects(e.getBounds())){
+                    if(getBoundsBottom().intersects(e.getBoundsTop())){
+                        e.die();
+                    }
+                    else if(getBounds().intersects(e.getBounds())){
                         die();
                     }
                 }
