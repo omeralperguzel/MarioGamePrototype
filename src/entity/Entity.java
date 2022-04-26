@@ -14,6 +14,9 @@ public abstract class Entity {
     public boolean jumping = false;
     public boolean falling = true;
 
+    protected int frame = 0;
+    protected int frameDelay = 0;
+
     public int velX, velY;
 
     public Id id;

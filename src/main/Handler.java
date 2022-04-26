@@ -1,7 +1,9 @@
 package main;
 
 import entity.Entity;
-import entity.Player;
+import entity.mob.Goomba;
+import entity.mob.Player;
+import entity.powerup.Mushroom;
 import tile.Tile;
 import tile.Wall;
 
@@ -11,8 +13,8 @@ import java.util.LinkedList;
 
 public class Handler {
 
-    public LinkedList<Entity> entity = new LinkedList<Entity>();
-    public LinkedList<Tile> tile = new LinkedList<Tile>();
+    public LinkedList<Entity> entity = new LinkedList<>();
+    public LinkedList<Tile> tile = new LinkedList<>();
 
     /*public Handler(){
         createLevel();
@@ -65,10 +67,14 @@ public class Handler {
                 int red = (pixel >> 16) & 0xff;
                 int green = (pixel >> 8) & 0xff;
                 int blue = (pixel) & 0xff;
-                //complete black pixel
+                //complete black pixel for levels
                 if(red==0 && green==0 && blue==0) addTile(new Wall(x*64,y*64,64,64,true,Id.wall,this));
-                //complete blue pixel
+                //complete blue pixel for player
                 if(red==0 && green==0 && blue==255) addEntity(new Player(x*64,y*64,64,64,false,Id.player,this));
+                //complete red pixel for mushroom
+                if(red==255 && green==0 && blue==0) addEntity(new Mushroom(x*64,y*64,64,64,true,Id.mushroom,this));
+                //one orange pixel for goomba
+                if(red==255 && green==119 && blue==0) addEntity(new Goomba(x*64,y*64,64,64,true,Id.goomba,this));
             }
         }
     }

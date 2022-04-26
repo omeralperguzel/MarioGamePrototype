@@ -1,7 +1,6 @@
 package main;
 
 import entity.Entity;
-import entity.Player;
 import graphics.Sprite;
 import graphics.SpriteSheet;
 import input.KeyInput;
@@ -30,7 +29,10 @@ public class Main extends Canvas implements Runnable{
     public static Camera cam;
 
     public static Sprite groundblock;
-    public static Sprite player[] = new Sprite[10];
+    public static Sprite[] player = new Sprite[10];
+    public static Sprite mushroom;
+    public static Sprite[] goomba;
+    //had to think about that power up one day due to 2 character reasons
 
     private synchronized void start() {
         if(running) return;
@@ -66,13 +68,19 @@ public class Main extends Canvas implements Runnable{
 
         groundblock = new Sprite(sheet,1,1);
         //player = new Sprite[8];
-
+        mushroom = new Sprite(sheet,2, 1);
+        goomba = new Sprite[8];
+        //PLAYER 1 SPRITES
         for(int i=0; i<player.length; i++){
             player[i] = new Sprite(sheet,i+1,16);
         }
+        //GOOMBA SPRITES
+        for(int i=0; i<goomba.length; i++){
+            goomba[i] = new Sprite(sheet,i+1,15);
+        }
 
         try {
-            image = ImageIO.read(getClass().getResource("/leveltest1.png"));
+            image = ImageIO.read(getClass().getResource("/leveltest0.png"));
         } catch (IOException e){
             e.printStackTrace();
         }

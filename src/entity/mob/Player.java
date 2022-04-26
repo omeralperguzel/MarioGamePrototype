@@ -1,5 +1,6 @@
-package entity;
+package entity.mob;
 
+import entity.Entity;
 import main.Handler;
 import main.Id;
 import main.Main;
@@ -8,9 +9,6 @@ import tile.Tile;
 import java.awt.*;
 
 public class Player<frameDelay> extends Entity {
-
-    private int frame = 0;
-    private int frameDelay = 0;
 
     private boolean animate = false;
 
@@ -36,8 +34,8 @@ public class Player<frameDelay> extends Entity {
         y += velY;
         if (x <= 0) x = 0;
         //if(y<=0) y = 0;
-        if(x + width >= 1080) x = 1080 - width;
-        if(y + height>=771) y = 771-height;
+        //if(x + width >= 1080) x = 1080 - width;
+        //if(y + height>=771) y = 771-height;
         if(velX!=0) animate = true;
         else animate = false;
         //Removed for falling physics
@@ -76,6 +74,30 @@ public class Player<frameDelay> extends Entity {
                     }
                 }
             }
+        //EXPANSION FOR MUSHROOM
+            for(int i=0;i<handler.entity.size();i++){
+                Entity e = handler.entity.get(i);
+
+                if(e.getId()==Id.mushroom){
+                    if(getBounds().intersects(e.getBounds())){
+                        int tpX = getX();
+                        int tpY = getY();
+                        width*=2;
+                        height*=2;
+                        setX(tpX-width);
+                        setY(tpY-height);
+                        e.die();
+                    }
+                }
+                else if(e.getId()==Id.goomba){
+                    if(getBounds().intersects(e.getBounds())){
+                        die();
+                    }
+                }
+            }
+            //this loop is scanning our whole entity linked list in our handler class
+            //then whatever entity it scans it will create an entity object out (part 19)
+
             if (jumping) {
                 gravity -= 0.1;
                 setVelY((int) -gravity);
