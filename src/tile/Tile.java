@@ -9,10 +9,11 @@ public abstract class Tile {
     public int x, y;
     public int width, height;
 
-    public boolean solid = false;
+    public boolean solid;
     public boolean activated = false;
 
     public int velX, velY;
+    public int facing;
 
     public Id id;
 

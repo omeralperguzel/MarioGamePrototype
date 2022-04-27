@@ -88,8 +88,8 @@ public class Main extends Canvas implements Runnable{
 
         try {
             image = ImageIO.read(getClass().getResource("/leveltest0.png"));
-            background = ImageIO.read(getClass().getResource("/background.png"));
-            //background = ImageIO.read(getClass().getResource("/backgroundtest1.jpg"));
+            //background = ImageIO.read(getClass().getResource("/background.png"));
+            background = ImageIO.read(getClass().getResource("/backgroundtest1.png"));
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -159,9 +159,7 @@ public class Main extends Canvas implements Runnable{
 
         for(Entity e:handler.entity){
             //look at what is entity and handler
-            if(e.getId()==Id.player){
-                cam.tick(e);
-            }
+            if(e.getId()==Id.player) if (!e.goingDownPipe) cam.tick(e);
         }
     }
 

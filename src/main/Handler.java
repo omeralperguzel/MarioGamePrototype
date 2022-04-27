@@ -4,6 +4,7 @@ import entity.Entity;
 import entity.mob.Goomba;
 import entity.mob.Player;
 import entity.powerup.Mushroom;
+import tile.Pipe;
 import tile.PowerUpBlock;
 import tile.Tile;
 import tile.Wall;
@@ -78,6 +79,9 @@ public class Handler {
                 if(red==255 && green==119 && blue==0) addEntity(new Goomba(x*64,y*64,64,64,true,Id.goomba,this));
                 //one yellow pixel for power up
                 if(red==255 && green==255 && blue==0) addTile(new PowerUpBlock(x*64,y*64,64,64,true,Id.powerUp,this, Main.mushroom));
+                //one green pixel for pipes
+                if(red==0 && (green>123 && green<129) && blue==0) addTile(new Pipe(x*64,y*64,64,64*15,true,Id.pipe,this, 128-green));
+
 
             }
         }
