@@ -24,6 +24,14 @@ public class Main extends Canvas implements Runnable{
     private boolean running = false;
     private BufferedImage image;
 
+    public static int coin = 0;
+    //public static int lives = 5;
+    //public static int deathScreenTime = 0;
+
+    //public static boolean showDeathScreen = true;
+    //public static boolean gameOver = false;
+    //public static boolean playing = false;
+
     private static BufferedImage background;
 
     public static Handler handler;
@@ -76,6 +84,8 @@ public class Main extends Canvas implements Runnable{
         powerUp = new Sprite(sheet, 3,1);
         usedPowerUp = new Sprite(sheet, 1,1);
         mushroom = new Sprite(sheet,2, 1);
+        coin = new Sprite(sheet,4,1);
+
         goomba = new Sprite[8];
         //PLAYER 1 SPRITES
         for(int i=0; i<player.length; i++){
@@ -157,17 +167,26 @@ public class Main extends Canvas implements Runnable{
     public void tick(){
         handler.tick();
 
+        for(int i=0; i<handler.entity.size(); i++){
+            Entity e = handler.entity.get(i);
+            if(e.getId()==Id.player){
+                if(!e.goingDownPipe) cam.tick(e);
+            }
+        }
+
         for(Entity e:handler.entity){
             //look at what is entity and handler
-            if(e.getId()==Id.player) if (!e.goingDownPipe) cam.tick(e);
+            if(e.getId()==Id.player){
+                cam.tick(e);
+            }
         }
     }
 
-    public int getFrameWidth(){
+    public static int getFrameWidth(){
         return WIDTH*SCALE;
     }
 
-    public int getFrameHeight(){
+    public static int getFrameHeight(){
         return HEIGHT*SCALE;
     }
 
