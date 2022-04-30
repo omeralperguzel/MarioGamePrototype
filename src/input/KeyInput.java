@@ -12,35 +12,45 @@ public class KeyInput implements KeyListener  {
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        //for(Entity en: Main.handler.entity)
-        for(int i=0; i<Main.handler.entity.size();i++){
-            Entity en = Main.handler.entity.get(i);
+        for(Entity en: Main.handler.entity){
             if(en.getId()== Id.player){
                 if(en.goingDownPipe) return;
-                //after going down pipe it makes sure no code under that is running
+
                 switch(key){
                     case KeyEvent.VK_W:
+
+                        for(int q=0; q < Main.handler.tile.size(); q++){
+                            Tile t = Main.handler.tile.get(q);
+                            if(t.getId() == Id.pipe){
+                                if(en.getBoundsTop().intersects(t.getBounds())){
+                                    if(!en.goingDownPipe) en.goingDownPipe = true;
+                                }
+                            }
+                        }
+
                         if(!en.jumping){
                             en.jumping = true;
-                            en.gravity = 9.0;
+                            en.gravity = 10.0;
                         }
                         break;
+
                 case KeyEvent.VK_S:
-                    for(int j=0;j<Main.handler.tile.size();j++){
-                        Tile t = Main.handler.tile.get(j);
-                        //en.setVelY(5);
+                    for(int q=0; q < Main.handler.tile.size(); q++){
+                        Tile t = Main.handler.tile.get(q);
                         if(t.getId() == Id.pipe){
                             if(en.getBoundsBottom().intersects(t.getBounds())){
                                 if(!en.goingDownPipe) en.goingDownPipe = true;
                             }
                         }
                     }
+                    //en.setVelY(5);
                     break;
 
                     case KeyEvent.VK_A:
                         en.setVelX(-5);
                         en.facing = 0;
                         break;
+
                     case KeyEvent.VK_D:
                         en.setVelX(5);
                         en.facing = 1;
@@ -53,7 +63,7 @@ public class KeyInput implements KeyListener  {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         for(Entity en: Main.handler.entity){
-            if(en.getId() == Id.player){
+            if(en.getId()== Id.player){
                 switch(key){
                     case KeyEvent.VK_W:
                         en.setVelY(0);

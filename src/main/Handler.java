@@ -82,7 +82,6 @@ public class Handler {
                 //one green pixel for pipes
                 if(red==0 && (green>123 && green<129) && blue==0) addTile(new Pipe(x*64,y*64,64,64*15,true,Id.pipe,this, 128-green));
 
-
             }
         }
     }
