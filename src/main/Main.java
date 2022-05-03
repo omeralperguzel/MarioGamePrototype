@@ -8,12 +8,14 @@ import input.KeyInput;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 //uses abstract windowing toolkit libraries for window dimensions etc.
-public class Main extends Canvas implements Runnable{
+public class Main<second> extends Canvas implements Runnable{
 
     public static final int WIDTH = 270;
     public static final int HEIGHT = WIDTH/14*10;
@@ -23,13 +25,17 @@ public class Main extends Canvas implements Runnable{
     private Thread thread;
     private boolean running = false;
     private BufferedImage image;
+    private BufferedImage darksoulsyoudied;
 
-    public static int coin = 0;
-    //public static int lives = 5;
-    //public static int deathScreenTime = 0;
+    public int secondscount;
 
-    //public static boolean showDeathScreen = true;
-    //public static boolean gameOver = false;
+    public static int coins = 0;
+    public static int lives = 5;
+    //time for showing game over screen on display
+    public static int deathScreenTime = 0;
+
+    public static boolean showDeathScreen = true;
+    public static boolean gameOver = false;
     //public static boolean playing = false;
 
     private static BufferedImage background;
@@ -41,6 +47,7 @@ public class Main extends Canvas implements Runnable{
     public static Sprite groundblock;
     public static Sprite[] player;
     public static Sprite mushroom;
+    public static Sprite coin;
     public static Sprite powerUp;
     public static Sprite usedPowerUp;
     public static Sprite[] goomba;
@@ -71,6 +78,7 @@ public class Main extends Canvas implements Runnable{
     }
 
     private void init(){
+
         /* abbreviation of initialize, initializing the player object in this game */
         handler = new Handler();
         sheet = new SpriteSheet("/spritesheet.png");
@@ -100,16 +108,19 @@ public class Main extends Canvas implements Runnable{
             image = ImageIO.read(getClass().getResource("/leveltest0.png"));
             //background = ImageIO.read(getClass().getResource("/background.png"));
             background = ImageIO.read(getClass().getResource("/backgroundtest1.png"));
+            darksoulsyoudied = ImageIO.read(getClass().getResource("/darksoulsyoudied.png"));
         } catch (IOException e){
             e.printStackTrace();
         }
 
-        handler.createLevel(image);
+        //Removed in part 26 for new lives system
+        //handler.createLevel(image);
 
         //Removed in part 18 for new level design system
         //handler.addEntity(new Player(300,512,64,64,true,Id.player,handler));
         //Removed in part 13 (remove this note before deadline)
         //handler.addTile(new Wall(200,200,64,64,true,Id.wall,handler));
+
     }
 
     public void run(){
@@ -140,24 +151,72 @@ public class Main extends Canvas implements Runnable{
                 System.out.println(frames + " fps " + ticks + " updates per second");
                 frames = 0;
                 ticks = 0;
+                secondscount++;
             }
         }
         stop();
     }
 
     public void render(){
+
         BufferStrategy bs = getBufferStrategy();
             if(bs==null){
                 createBufferStrategy(3);
                 return;
             }
             Graphics g = bs.getDrawGraphics();
-            g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-            // g.setColor(Color.BLACK);
+
+        if (showDeathScreen) {
+            if(!gameOver){
+                g.setColor(new Color(0,0,0));
+                g.fillRect(0,0,getWidth()-0,getHeight()-0);
+                g.setColor(Color.WHITE);
+                //show lives
+                g.drawImage(Main.player[0].getBufferedImage(),WIDTH*4/2-120,HEIGHT*4/2-50,60,60,null);
+                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.drawString("x" + lives, WIDTH*4/2-30, HEIGHT*4/2);
+                g.translate(cam.getX(),cam.getY());
+                handler.render(g);
+            }
+            else{
+                g.setColor(new Color(0,0,0));
+                g.fillRect(0,0,getWidth()-0,getHeight()-0);
+                g.setColor(Color.RED);
+                g.drawImage(Main.goomba[0].getBufferedImage(),WIDTH*4/2-190,HEIGHT*4/2-50,60,60,null);
+                //g.setFont(new Font("Tahoma",Font.BOLD,45));
+                //g.drawString("GAME OVER!", WIDTH*4/2-100, HEIGHT*4/2);
+                //For Dark Souls references :D
+                g.drawImage(darksoulsyoudied, 0, 0, getWidth(), getHeight(), null);
+            }
+        }
             //g.setColor(new Color(125,125,185));
             //g.fillRect(0,0,getWidth(),getHeight());
-            g.translate(cam.getX(),cam.getY());
-            handler.render(g);
+
+
+            if(!showDeathScreen){
+                g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+                //COIN ADDITIONS
+                g.drawImage(Main.coin.getBufferedImage(),50,20,60,60,null);
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.drawString(":" + coins, 120, 80);
+                //TIMER EXPERIMENT
+                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.drawString("Time: " + secondscount, getWidth()/2-240, 80);
+                //SCORE EXPERIMENT
+                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.drawString("Score: " + scorecalctest1, getWidth()/2+40, 80);
+                //LIVE SYSTEM ADDITIONS
+                g.drawImage(Main.player[1].getBufferedImage(),getWidth()-172,20,60,60,null);
+                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.drawString("x" + lives, getWidth()-100, 80);
+                //for rendering blocks only if show death screen is false
+                g.translate(cam.getX(),cam.getY());
+                handler.render(g);
+
+            }
+            //
+
             //g.setColor(Color.RED);
             //g.fillRect(200,200,getWidth()-400,getHeight()-400);
             g.dispose();
@@ -180,6 +239,13 @@ public class Main extends Canvas implements Runnable{
                 cam.tick(e);
             }
         }
+        if(showDeathScreen) deathScreenTime++;
+        if(deathScreenTime>=180) {
+            showDeathScreen = false;
+            deathScreenTime = 0;
+            handler.clearLevel();
+            handler.createLevel(image);
+        }
     }
 
     public static int getFrameWidth(){
@@ -200,8 +266,11 @@ public class Main extends Canvas implements Runnable{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         game.start();
-//ne olduklarini ogren
     }
 
-}
+    int scorecalctest1 = coins*10-secondscount/10;
+
+    }
+
+
 

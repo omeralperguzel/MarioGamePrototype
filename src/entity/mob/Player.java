@@ -55,7 +55,7 @@ public class Player<frameDelay> extends Entity {
             //if (!t.solid) break;
             if(t.isSolid() && !goingDownPipe){
             //if (t.getId() == Id.wall) {
-                if (getBoundsTop().intersects(t.getBounds())) {
+                if (getBoundsTop().intersects(t.getBounds()) && t.getId() != Id.coin) {
                     setVelY(0);
                     //y = t.getY()+t.height;
                     if(jumping && !goingDownPipe){
@@ -69,7 +69,7 @@ public class Player<frameDelay> extends Entity {
                         }
                     }
                 }
-                if (getBoundsBottom().intersects(t.getBounds())) {
+                if (getBoundsBottom().intersects(t.getBounds()) && t.getId() != Id.coin) {
                     setVelY(0);
                     //y = t.getY()-t.height;
                     if (falling) falling = false;
@@ -82,15 +82,20 @@ public class Player<frameDelay> extends Entity {
                     }
 
                 }
-                    if (getBoundsLeft().intersects(t.getBounds())) {
+                    if (getBoundsLeft().intersects(t.getBounds()) && t.getId() != Id.coin) {
                         setVelX(0);
                         x = t.getX() + t.width;
                     }
-                    if (getBoundsRight().intersects(t.getBounds())) {
+                    if (getBoundsRight().intersects(t.getBounds()) && t.getId() != Id.coin) {
                         setVelX(0);
                         x = t.getX() - t.width;
                     }
                 //}
+                //PLAYER-COIN INTERACTION
+                if(getBounds().intersects(t.getBounds()) && t.getId() == Id.coin) {
+                    Main.coins++;
+                    t.die();
+                }
             }
         //EXPANSION FOR MUSHROOM
             for(int i=0;i<handler.entity.size();i++){

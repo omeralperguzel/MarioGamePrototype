@@ -2,6 +2,8 @@ package entity;
 
 import main.Handler;
 import main.Id;
+import main.Main;
+
 import java.awt.*;
 
 public abstract class Entity {
@@ -43,6 +45,10 @@ public abstract class Entity {
 
     public void die(){
         handler.removeEntity(this);
+        Main.lives--;
+        Main.showDeathScreen = true;
+
+        if(Main.lives<=0) Main.gameOver = true;
     }
 
     public int getX() {
