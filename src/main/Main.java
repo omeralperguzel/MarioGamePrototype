@@ -1,9 +1,11 @@
 package main;
 
 import entity.Entity;
+import graphics.GUI.Launcher;
 import graphics.Sprite;
 import graphics.SpriteSheet;
 import input.KeyInput;
+import input.MouseInput;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -36,13 +38,15 @@ public class Main<second> extends Canvas implements Runnable{
 
     public static boolean showDeathScreen = true;
     public static boolean gameOver = false;
-    //public static boolean playing = false;
+    public static boolean playing = false;
 
     private static BufferedImage background;
 
     public static Handler handler;
     public static SpriteSheet sheet;
     public static Camera cam;
+    public static Launcher launcher;
+    public static MouseInput mouse;
 
     public static Sprite groundblock;
     public static Sprite[] player;
@@ -83,8 +87,12 @@ public class Main<second> extends Canvas implements Runnable{
         handler = new Handler();
         sheet = new SpriteSheet("/spritesheet.png");
         cam = new Camera();
+        launcher = new Launcher();
+        mouse = new MouseInput();
 
         addKeyListener(new KeyInput());
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
 
         groundblock = new Sprite(sheet,1,1);
         player = new Sprite[10];
@@ -166,17 +174,17 @@ public class Main<second> extends Canvas implements Runnable{
             }
             Graphics g = bs.getDrawGraphics();
 
-        if (showDeathScreen) {
+        if (showDeathScreen && playing) {
             if(!gameOver){
                 g.setColor(new Color(0,0,0));
                 g.fillRect(0,0,getWidth()-0,getHeight()-0);
                 g.setColor(Color.WHITE);
                 //show lives
                 g.drawImage(Main.player[0].getBufferedImage(),WIDTH*4/2-120,HEIGHT*4/2-50,60,60,null);
-                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString("x" + lives, WIDTH*4/2-30, HEIGHT*4/2);
-                g.translate(cam.getX(),cam.getY());
-                handler.render(g);
+                if(playing) g.translate(cam.getX(),cam.getY());
+                if(playing) handler.render(g);
             }
             else{
                 g.setColor(new Color(0,0,0));
@@ -187,32 +195,35 @@ public class Main<second> extends Canvas implements Runnable{
                 //g.drawString("GAME OVER!", WIDTH*4/2-100, HEIGHT*4/2);
                 //For Dark Souls references :D
                 g.drawImage(darksoulsyoudied, 0, 0, getWidth(), getHeight(), null);
+                secondscount = 0;
             }
         }
+        else if(!playing) launcher.render(g);
+
             //g.setColor(new Color(125,125,185));
             //g.fillRect(0,0,getWidth(),getHeight());
 
 
-            if(!showDeathScreen){
+            if(!showDeathScreen && playing){
                 g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
                 //COIN ADDITIONS
                 g.drawImage(Main.coin.getBufferedImage(),50,20,60,60,null);
                 g.setColor(Color.WHITE);
-                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString(":" + coins, 120, 80);
                 //TIMER EXPERIMENT
-                g.setFont(new Font("Tahoma",Font.BOLD,45));
-                g.drawString("Time: " + secondscount, getWidth()/2-240, 80);
+                g.setFont(new Font("Pixel NES",Font.PLAIN,45));
+                g.drawString("Time: " + secondscount, getWidth()/2-280, 80);
                 //SCORE EXPERIMENT
-                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString("Score: " + scorecalctest1, getWidth()/2+40, 80);
                 //LIVE SYSTEM ADDITIONS
                 g.drawImage(Main.player[1].getBufferedImage(),getWidth()-172,20,60,60,null);
-                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString("x" + lives, getWidth()-100, 80);
                 //for rendering blocks only if show death screen is false
-                g.translate(cam.getX(),cam.getY());
-                handler.render(g);
+                if(playing) g.translate(cam.getX(),cam.getY());
+                if(playing) handler.render(g);
 
             }
             //
@@ -224,7 +235,7 @@ public class Main<second> extends Canvas implements Runnable{
         }
 
     public void tick(){
-        handler.tick();
+        if(playing) handler.tick();
 
         for(int i=0; i<handler.entity.size(); i++){
             Entity e = handler.entity.get(i);

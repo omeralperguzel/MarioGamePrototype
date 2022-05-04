@@ -1,6 +1,9 @@
 package graphics.GUI;
 
+import main.Main;
+
 import java.awt.*;
+import java.util.Locale;
 
 public class Button {
 
@@ -18,11 +21,22 @@ public class Button {
     }
 
     public void render(Graphics g){
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Pixel NES",Font.PLAIN,45));
+        //g.drawRect(getX(),getY(),getWidth(),getHeight());
 
+        //aligning text in launcher
+        FontMetrics fm = g.getFontMetrics();
+        int stringX = (getWidth() - fm.stringWidth(getLabel())) / 2;
+        int stringY = (fm.getAscent() + (getHeight() - (fm.getAscent()+fm.getDescent()))/2);
+        g.drawString(getLabel(),getX()+stringX,getY()+stringY);
     }
 
     public void triggerEvent(){
-
+        if(getLabel().toLowerCase().contains("play")) Main.playing = true;
+        if(getLabel().toLowerCase().contains("help")) Main.playing = true;
+        if(getLabel().toLowerCase().contains("credits")) Main.playing = true;
+        if(getLabel().toLowerCase().contains("exit")) System.exit(0);
     }
 
     public int getX() {
