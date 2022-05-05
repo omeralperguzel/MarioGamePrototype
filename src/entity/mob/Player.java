@@ -1,19 +1,23 @@
 package entity.mob;
 
 import entity.Entity;
-import input.states.PlayerState;
+import states.KoopaState;
+import states.PlayerState;
 import main.Handler;
 import main.Id;
 import main.Main;
 import tile.Tile;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Player<frameDelay> extends Entity {
 
     private PlayerState state;
 
     private int pixelsTravelled = 0;
+
+    private Random random;
 
     private boolean animate = false;
 
@@ -22,6 +26,8 @@ public class Player<frameDelay> extends Entity {
         //setVelX(5);
 
         state = PlayerState.SMALL;
+
+        random = new Random();
     }
 
     public void render(Graphics g) {
@@ -91,11 +97,6 @@ public class Player<frameDelay> extends Entity {
                         x = t.getX() - t.width;
                     }
                 //}
-                //PLAYER-COIN INTERACTION
-                if(getBounds().intersects(t.getBounds()) && t.getId() == Id.coin) {
-                    Main.coins++;
-                    t.die();
-                }
             }
         //EXPANSION FOR MUSHROOM
             for(int i=0;i<handler.entity.size();i++){
@@ -113,6 +114,73 @@ public class Player<frameDelay> extends Entity {
                         e.die();
                     }
                 }
+
+                //PLAYER-COIN INTERACTION
+                if(getBounds().intersects(t.getBounds()) && t.getId() == Id.coin) {
+                    Main.coins++;
+                    t.die();
+                }
+
+                else if(e.getId()==Id.koopa){
+                    if(e.koopaState == koopaState.WALKING){
+
+                        if(getBoundsBottom().intersects(e.getBoundsTop())){
+                            e.koopaState = KoopaState.SHELL;
+
+                            jumping = true;
+                            falling = false;
+                            gravity = 3.5;
+                        }
+                        else if(getBounds().intersects(e.getBounds())){
+                            die();
+                        }
+                    }
+                    else if(e.koopaState == KoopaState.SHELL){
+
+                        if(getBoundsBottom().intersects(e.getBoundsTop())){
+                            e.koopaState = KoopaState.SPINNING;
+
+                            int dir = random.nextInt(2);
+
+                            switch(dir){
+                                case 0:
+                                    e.setVelX(-10);
+                                    break;
+                                case 1:
+                                    e.setVelX(10);
+                                    break;
+                            }
+
+                            if(getBoundsLeft().intersects(e.getBoundsRight())){
+                                e.setVelX(-10);
+                                e.koopaState = KoopaState.SPINNING;
+                            }
+
+                            if(getBoundsRight().intersects(e.getBoundsLeft())){
+                                e.setVelX(10);
+                                e.koopaState = KoopaState.SPINNING;
+                            }
+
+                            jumping = true;
+                            falling = false;
+                            gravity = 3.5;
+                        }
+
+                    }
+                    else if(e.koopaState == KoopaState.SPINNING){
+                        if(getBoundsBottom().intersects(e.getBoundsTop())){
+                            e.koopaState = KoopaState.SHELL;
+
+                            jumping = true;
+                            falling = false;
+                            gravity = 3.5;
+                        }
+                        else if(getBounds().intersects(e.getBounds())){
+                            die();
+                        }
+                    }
+                }
+
                 else if(e.getId()==Id.goomba) {
                     if (getBoundsBottom().intersects(e.getBoundsTop())) {
                         e.die();

@@ -1,4 +1,4 @@
-package input.states;
+package states;
 
 public enum PlayerState {
 

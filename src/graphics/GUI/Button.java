@@ -34,10 +34,11 @@ public class Button {
 
     public void triggerEvent(){
         if(getLabel().toLowerCase().contains("play")) Main.playing = true;
-        if(getLabel().toLowerCase().contains("help")) Main.playing = true;
-        if(getLabel().toLowerCase().contains("credits")) Main.playing = true;
+        if(getLabel().toLowerCase().contains("help")) //return graphics.GUI.Launcher.drawHelpScreen();
+        if(getLabel().toLowerCase().contains("credits")) //return graphics.GUI.Launcher.drawHelpScreen();
         if(getLabel().toLowerCase().contains("exit")) System.exit(0);
     }
+
 
     public int getX() {
         return x;

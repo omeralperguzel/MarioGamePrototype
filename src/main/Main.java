@@ -55,6 +55,8 @@ public class Main<second> extends Canvas implements Runnable{
     public static Sprite powerUp;
     public static Sprite usedPowerUp;
     public static Sprite[] goomba;
+    public static Sprite pipe;
+    public static Sprite[] koopa;
     //had to think about that power up one day due to 2 character reasons
 
     private synchronized void start() {
@@ -95,14 +97,16 @@ public class Main<second> extends Canvas implements Runnable{
         addMouseMotionListener(mouse);
 
         groundblock = new Sprite(sheet,1,1);
-        player = new Sprite[10];
         //POWER UP SPRITES
         powerUp = new Sprite(sheet, 3,1);
         usedPowerUp = new Sprite(sheet, 1,1);
         mushroom = new Sprite(sheet,2, 1);
-        coin = new Sprite(sheet,4,1);
+        coin = new Sprite(sheet,5,1);
+        pipe = new Sprite(sheet, 4,1);
 
+        player = new Sprite[10];
         goomba = new Sprite[8];
+        koopa = new Sprite[8];
         //PLAYER 1 SPRITES
         for(int i=0; i<player.length; i++){
             player[i] = new Sprite(sheet,i+1,16);
@@ -110,6 +114,10 @@ public class Main<second> extends Canvas implements Runnable{
         //GOOMBA SPRITES
         for(int i=0; i<goomba.length; i++){
             goomba[i] = new Sprite(sheet,i+1,15);
+        }
+        //KOOPA SPRITES
+        for(int i=0; i<koopa.length; i++){
+            koopa[i] = new Sprite(sheet,i+1,14);
         }
 
         try {
@@ -187,12 +195,13 @@ public class Main<second> extends Canvas implements Runnable{
                 if(playing) handler.render(g);
             }
             else{
-                g.setColor(new Color(0,0,0));
+                /*g.setColor(new Color(0,0,0));
                 g.fillRect(0,0,getWidth()-0,getHeight()-0);
                 g.setColor(Color.RED);
                 g.drawImage(Main.goomba[0].getBufferedImage(),WIDTH*4/2-190,HEIGHT*4/2-50,60,60,null);
-                //g.setFont(new Font("Tahoma",Font.BOLD,45));
-                //g.drawString("GAME OVER!", WIDTH*4/2-100, HEIGHT*4/2);
+                g.setFont(new Font("Tahoma",Font.BOLD,45));
+                g.drawString("GAME OVER!", WIDTH*4/2-100, HEIGHT*4/2);
+                */
                 //For Dark Souls references :D
                 g.drawImage(darksoulsyoudied, 0, 0, getWidth(), getHeight(), null);
                 secondscount = 0;
@@ -207,18 +216,18 @@ public class Main<second> extends Canvas implements Runnable{
             if(!showDeathScreen && playing){
                 g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
                 //COIN ADDITIONS
-                g.drawImage(Main.coin.getBufferedImage(),50,20,60,60,null);
+                g.drawImage(Main.coin.getBufferedImage(),25,25,60,60,null);
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
-                g.drawString(":" + coins, 120, 80);
+                g.drawString(":" + coins, 80, 80);
                 //TIMER EXPERIMENT
-                g.setFont(new Font("Pixel NES",Font.PLAIN,45));
-                g.drawString("Time: " + secondscount, getWidth()/2-280, 80);
+                g.setFont(new Font("Pixel NES",Font.PLAIN,40));
+                g.drawString("Time: " + secondscount, getWidth()/2-320, 70);
                 //SCORE EXPERIMENT
-                g.setFont(new Font("Pixel NES",Font.PLAIN,45));
-                g.drawString("Score: " + scorecalctest1, getWidth()/2+40, 80);
+                g.setFont(new Font("Pixel NES",Font.PLAIN,40));
+                g.drawString("Score: " + scorecalctest1, getWidth()/2+40, 70);
                 //LIVE SYSTEM ADDITIONS
-                g.drawImage(Main.player[1].getBufferedImage(),getWidth()-172,20,60,60,null);
+                g.drawImage(Main.player[1].getBufferedImage(),getWidth()-172,23,60,60,null);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString("x" + lives, getWidth()-100, 80);
                 //for rendering blocks only if show death screen is false

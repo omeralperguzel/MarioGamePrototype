@@ -2,6 +2,7 @@ package main;
 
 import entity.Entity;
 import entity.mob.Goomba;
+import entity.mob.Koopa;
 import entity.mob.Player;
 import entity.powerup.Mushroom;
 import tile.*;
@@ -80,6 +81,8 @@ public class Handler {
                 if(red==0 && (green>123 && green<129) && blue==0) addTile(new Pipe(x*64,y*64,64,64*15,true,Id.pipe,this, 128-green));
                 //one yellow pixel for coins
                 if(red==255 && green==250 && blue==0) addTile(new Coin(x*64,y*64,64,64,true,Id.coin,this));
+                //one green pixel for koopa
+                if(red==180 && green==250 && blue==180) addEntity(new Koopa(x*64,y*64,64,64,true,Id.koopa,this));
 
             }
         }

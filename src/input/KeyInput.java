@@ -7,6 +7,9 @@ import tile.Tile;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+
+import static main.Main.launcher;
 
 public class KeyInput implements KeyListener  {
 
@@ -22,7 +25,7 @@ public class KeyInput implements KeyListener  {
                         for(int q=0; q < Main.handler.tile.size(); q++){
                             Tile t = Main.handler.tile.get(q);
                             if(t.getId() == Id.pipe){
-                                if(en.getBoundsTop().intersects(t.getBounds())){
+                                if(en.getBoundsBottom().intersects(t.getBounds())){
                                     if(!en.goingDownPipe) en.goingDownPipe = true;
                                 }
                             }
@@ -54,6 +57,10 @@ public class KeyInput implements KeyListener  {
                     case KeyEvent.VK_D:
                         en.setVelX(5);
                         en.facing = 1;
+                        break;
+
+                    case KeyEvent.VK_ESCAPE:
+                        System.exit(0);
                         break;
                 }
             }

@@ -3,6 +3,7 @@ package entity;
 import main.Handler;
 import main.Id;
 import main.Main;
+import states.KoopaState;
 
 import java.awt.*;
 
@@ -24,6 +25,8 @@ public abstract class Entity {
     public int velX, velY;
 
     public Id id;
+
+    public KoopaState koopaState;
 
     public double gravity = 0.0;
 
