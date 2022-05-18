@@ -214,6 +214,7 @@ public class Main<second> extends Canvas implements Runnable{
 
 
             if(!showDeathScreen && playing){
+                if(playing) g.translate(cam.getX(),cam.getY());
                 if(playing) handler.render(g);
                 g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
                 //COIN ADDITIONS
