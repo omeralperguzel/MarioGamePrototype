@@ -59,6 +59,16 @@ public class Main<second> extends Canvas implements Runnable{
     public static Sprite[] koopa;
     //had to think about that power up one day due to 2 character reasons
 
+    public static Sounds backgroundmusic;
+    public static Sounds coinsound;
+    public static Sounds gameover;
+    public static Sounds jump;
+    public static Sounds mariodies;
+    public static Sounds oneup;
+    public static Sounds stomp;
+    public static Sounds mushroomsound;
+
+
     private synchronized void start() {
         if(running) return;
         running = true;
@@ -137,6 +147,17 @@ public class Main<second> extends Canvas implements Runnable{
         //Removed in part 13 (remove this note before deadline)
         //handler.addTile(new Wall(200,200,64,64,true,Id.wall,handler));
 
+        //SOUNDS
+        backgroundmusic = new Sounds("/audio/background.wav");
+        coinsound = new Sounds("/audio/coin.wav");
+        gameover = new Sounds("/audio/gameover.wav");
+        jump = new Sounds("/audio/jump.wav");
+        mariodies = new Sounds("/audio/marioDies.wav");
+        oneup = new Sounds("/audio/oneUp.wav");
+        stomp = new Sounds("/audio/stomp.wav");
+        mushroomsound = new Sounds("/audio/superMushroom.wav");
+
+
     }
 
     public void run(){
@@ -193,6 +214,8 @@ public class Main<second> extends Canvas implements Runnable{
                 g.drawString("x" + lives, WIDTH*4/2-30, HEIGHT*4/2);
                 if(playing) g.translate(cam.getX(),cam.getY());
                 if(playing) handler.render(g);
+
+                backgroundmusic.play();
             }
             else{
                 /*g.setColor(new Color(0,0,0));
@@ -205,6 +228,9 @@ public class Main<second> extends Canvas implements Runnable{
                 //For Dark Souls references :D
                 g.drawImage(darksoulsyoudied, 0, 0, getWidth(), getHeight(), null);
                 secondscount = 0;
+                lives = 5;
+                Main.gameover.play();
+                Main.backgroundmusic.stop();
             }
         }
         else if(!playing) launcher.render(g);
@@ -214,26 +240,29 @@ public class Main<second> extends Canvas implements Runnable{
 
 
             if(!showDeathScreen && playing){
-                if(playing) g.translate(cam.getX(),cam.getY());
-                if(playing) handler.render(g);
+                //if(playing) g.translate(cam.getX(),cam.getY());
+                //if(playing) handler.render(g);
                 g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+                //if(playing) g.translate(cam.getX(),cam.getY());
+                //if(playing) handler.render(g);
                 //COIN ADDITIONS
                 g.drawImage(Main.coin.getBufferedImage(),25,25,60,60,null);
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
-                g.drawString(":" + coins, 80, 80);
+                g.drawString(":" + coins/11, 80, 80);
                 //TIMER EXPERIMENT
                 g.setFont(new Font("Pixel NES",Font.PLAIN,40));
-                g.drawString("Time: " + secondscount, getWidth()/2-320, 70);
+                g.drawString("Time: " + secondscount, getWidth()/2-300, 70);
                 //SCORE EXPERIMENT
                 g.setFont(new Font("Pixel NES",Font.PLAIN,40));
-                g.drawString("Score: " + scorecalctest1, getWidth()/2+40, 70);
+                g.drawString("Score: " + score(), getWidth()/2+20, 70);
                 //LIVE SYSTEM ADDITIONS
                 g.drawImage(Main.player[1].getBufferedImage(),getWidth()-172,23,60,60,null);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString("x" + lives, getWidth()-100, 80);
                 //for rendering blocks only if show death screen is false
                 if(playing) g.translate(cam.getX(),cam.getY());
+                if(playing) handler.render(g);
 
             }
             //
@@ -289,7 +318,10 @@ public class Main<second> extends Canvas implements Runnable{
         game.start();
     }
 
-    int scorecalctest1 = coins*10-secondscount/10;
+    public int score(){
+        int scorecalctest1 = coins/11*10-secondscount/10;
+        return scorecalctest1;
+    }
 
     }
 

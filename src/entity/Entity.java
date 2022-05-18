@@ -47,17 +47,19 @@ public abstract class Entity {
     public abstract void tick();
 
     public void die(int isPlayer){
-        
         handler.removeEntity(this);
 
         if (isPlayer == 1) {
             Main.lives--;
             Main.showDeathScreen = true;
             if(Main.lives<=0) {
-                Main.gameOver = true
-                Main.lives == 5;
+                Main.gameOver = true;
+                //Main.lives == 5;
                 // restartGame()
-                };
+                //Main.gameover.play();
+                }
+
+            Main.mariodies.play();
             }
     }
 

@@ -109,6 +109,7 @@ public class Player<frameDelay> extends Entity {
                     if(getBounds().intersects(e.getBounds())){
                         int tpX = getX();
                         int tpY = getY();
+                        Main.mushroomsound.play();
                         width*=2;
                         height*=2;
                         setX(tpX-width);
@@ -120,6 +121,7 @@ public class Player<frameDelay> extends Entity {
 
                 //PLAYER-COIN INTERACTION
                 if(getBounds().intersects(t.getBounds()) && t.getId() == Id.coin) {
+                    Main.coinsound.play();
                     Main.coins=Main.coins+1;
                     t.die();
                 }
@@ -187,6 +189,7 @@ public class Player<frameDelay> extends Entity {
                 else if(e.getId()==Id.goomba) {
                     if (getBoundsBottom().intersects(e.getBoundsTop())) {
                         e.die(0);
+                        Main.stomp.play();
                     } else if (getBounds().intersects(e.getBounds())) {
                         if (state == PlayerState.BIG) {
                             state = PlayerState.SMALL;
