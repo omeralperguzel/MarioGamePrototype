@@ -53,7 +53,11 @@ public abstract class Entity {
         if (isPlayer == 1) {
             Main.lives--;
             Main.showDeathScreen = true;
-            if(Main.lives<=0) Main.gameOver = true;
+            if(Main.lives<=0) {
+                Main.gameOver = true
+                Main.lives == 5;
+                // restartGame()
+                };
             }
     }
 
