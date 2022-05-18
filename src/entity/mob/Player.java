@@ -121,7 +121,7 @@ public class Player<frameDelay> extends Entity {
                 //PLAYER-COIN INTERACTION
                 if(getBounds().intersects(t.getBounds()) && t.getId() == Id.coin) {
                     Main.coins=Main.coins+1;
-                    t.die(0);
+                    t.die();
                 }
 
                 else if(e.getId()==Id.koopa){
