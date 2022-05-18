@@ -46,12 +46,16 @@ public abstract class Entity {
 
     public abstract void tick();
 
-    public void die(){
+    public void die(int isPlayer){
+        
         handler.removeEntity(this);
-        Main.lives--;
-        Main.showDeathScreen = true;
 
-        if(Main.lives<=0) Main.gameOver = true;
+        if (isPlayer) {
+            Main.lives--;
+            Main.showDeathScreen = true;
+            if(Main.lives<=0) Main.gameOver = true;
+            }
+        Main.losealife.play(); // eklendi
     }
 
     public int getX() {

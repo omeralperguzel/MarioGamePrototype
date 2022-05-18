@@ -114,14 +114,14 @@ public class Player<frameDelay> extends Entity {
                         setX(tpX-width);
                         setY(tpY-height);
                         if (state == PlayerState.SMALL) state = PlayerState.BIG;
-                        e.die();
+                        e.die(0);
                     }
                 }
 
                 //PLAYER-COIN INTERACTION
                 if(getBounds().intersects(t.getBounds()) && t.getId() == Id.coin) {
                     Main.coins=Main.coins+1;
-                    t.die();
+                    t.die(0);
                 }
 
                 else if(e.getId()==Id.koopa){
@@ -135,7 +135,7 @@ public class Player<frameDelay> extends Entity {
                             gravity = 3.5;
                         }
                         else if(getBounds().intersects(e.getBounds())){
-                            die();
+                            die(1);
                         }
                     }
                     else if(e.koopaState == KoopaState.SHELL){
@@ -179,14 +179,14 @@ public class Player<frameDelay> extends Entity {
                             gravity = 3.5;
                         }
                         else if(getBounds().intersects(e.getBounds())){
-                            die();
+                            die(1);
                         }
                     }
                 }
 
                 else if(e.getId()==Id.goomba) {
                     if (getBoundsBottom().intersects(e.getBoundsTop())) {
-                        e.die();
+                        e.die(0);
                     } else if (getBounds().intersects(e.getBounds())) {
                         if (state == PlayerState.BIG) {
                             state = PlayerState.SMALL;
@@ -195,7 +195,7 @@ public class Player<frameDelay> extends Entity {
                             x += width;
                             y += height;
                         } else if (state == PlayerState.SMALL) {
-                            die();
+                            die(1);
                         }
                     }
                 }//added for isSolid() command
