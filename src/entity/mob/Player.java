@@ -57,7 +57,10 @@ public class Player<frameDelay> extends Entity {
         if(velX!=0) animate = true;
         else animate = false;
         //Removed for falling physics
-        for (Tile t : handler.tile) {
+        //This system is added for the coin system to work as intended.
+        for (int a=0; a<handler.tile.size(); a++){
+            Tile t = handler.tile.get(a);
+        //for (Tile t : handler.tile) { Removed for coin physics work
             //if (!t.solid) break;
             if(t.isSolid() && !goingDownPipe){
             //if (t.getId() == Id.wall) {
@@ -117,7 +120,7 @@ public class Player<frameDelay> extends Entity {
 
                 //PLAYER-COIN INTERACTION
                 if(getBounds().intersects(t.getBounds()) && t.getId() == Id.coin) {
-                    Main.coins++;
+                    Main.coins=Main.coins+1;
                     t.die();
                 }
 
