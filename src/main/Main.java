@@ -214,12 +214,10 @@ public class Main<second> extends Canvas implements Runnable{
 
 
             if(!showDeathScreen && playing){
+                if(playing) handler.render(g);
                 g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
                 //COIN ADDITIONS
                 g.drawImage(Main.coin.getBufferedImage(),25,25,60,60,null);
-                //for rendering blocks only if show death screen is false
-                if(playing) g.translate(cam.getX(),cam.getY());
-                if(playing) handler.render(g);
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString(":" + coins, 80, 80);
@@ -233,6 +231,8 @@ public class Main<second> extends Canvas implements Runnable{
                 g.drawImage(Main.player[1].getBufferedImage(),getWidth()-172,23,60,60,null);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString("x" + lives, getWidth()-100, 80);
+                //for rendering blocks only if show death screen is false
+                if(playing) g.translate(cam.getX(),cam.getY());
 
             }
             //
