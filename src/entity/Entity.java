@@ -50,12 +50,11 @@ public abstract class Entity {
         
         handler.removeEntity(this);
 
-        if (isPlayer) {
+        if (isPlayer == 1) {
             Main.lives--;
             Main.showDeathScreen = true;
             if(Main.lives<=0) Main.gameOver = true;
             }
-        Main.losealife.play(); // eklendi
     }
 
     public int getX() {
