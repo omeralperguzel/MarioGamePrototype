@@ -31,15 +31,23 @@ public class Player<frameDelay> extends Entity {
     }
 
     public void render(Graphics g) {
-        //left
-        if(facing==0){
-            g.drawImage(Main.player[frame+5].getBufferedImage(),x,y,width,height,null);
-        }
-        //right
-        else if(facing==1){
-            g.drawImage(Main.player[frame].getBufferedImage(),x,y,width,height,null);
-        }
 
+        if(!jumping){
+            if(facing==0){//left
+                g.drawImage(Main.player[frame+4].getBufferedImage(),x,y,width,height,null);
+            }
+            else if(facing==1){//right
+                g.drawImage(Main.player[frame].getBufferedImage(),x,y,width,height,null);
+            }
+        }
+        else if(jumping){//left
+            if(facing==0){
+                g.drawImage(Main.playerjump[1].getBufferedImage(),x,y,width,height,null);
+            }
+            else if(facing==1){//right
+                g.drawImage(Main.playerjump[0].getBufferedImage(),x,y,width,height,null);
+            }
+        }
     }
 
     public void tick() {
@@ -57,7 +65,10 @@ public class Player<frameDelay> extends Entity {
         if(velX!=0) animate = true;
         else animate = false;
         //Removed for falling physics
-        for (Tile t : handler.tile) {
+        //This system is added for the coin system to work as intended.
+        for (int a=0; a<handler.tile.size(); a++){
+            Tile t = handler.tile.get(a);
+        //for (Tile t : handler.tile) { Removed for coin physics work
             //if (!t.solid) break;
             if(t.isSolid() && !goingDownPipe){
             //if (t.getId() == Id.wall) {
@@ -96,28 +107,46 @@ public class Player<frameDelay> extends Entity {
                         setVelX(0);
                         x = t.getX() - t.width;
                     }
+
+                    if (getBounds().intersects(t.getBounds())){
+                        if(t.getId() == Id.flag){
+                            Main.switchLevel();
+                        }
+                    }
                 //}
             }
-        //EXPANSION FOR MUSHROOM
+        //EXPANSION FOR MUSHROOMS
             for(int i=0;i<handler.entity.size();i++){
                 Entity e = handler.entity.get(i);
 
                 if(e.getId()==Id.mushroom){
-                    if(getBounds().intersects(e.getBounds())){
-                        int tpX = getX();
-                        int tpY = getY();
-                        width*=2;
-                        height*=2;
-                        setX(tpX-width);
-                        setY(tpY-height);
-                        if (state == PlayerState.SMALL) state = PlayerState.BIG;
-                        e.die();
+                    switch(e.getMushroomType()){
+                        case 0: //Growth mushroom
+                            if(getBounds().intersects(e.getBounds())){
+                                int tpX = getX();
+                                int tpY = getY();
+                                Main.mushroomsound.play();
+                                width*=2;
+                                height*=2;
+                                setX(tpX-width);
+                                setY(tpY-height);
+                                if (state == PlayerState.SMALL) state = PlayerState.BIG;
+                                e.die(0);
+                            }
+                        case 1: //One up mushroom
+                            if(getBounds().intersects(e.getBounds())){
+                                Main.lives=Main.lives+1;
+                                Main.oneup.play();
+                                e.die(0);
+                            }
                     }
+
                 }
 
                 //PLAYER-COIN INTERACTION
                 if(getBounds().intersects(t.getBounds()) && t.getId() == Id.coin) {
-                    Main.coins++;
+                    Main.coinsound.play();
+                    Main.coins=Main.coins+1;
                     t.die();
                 }
 
@@ -132,7 +161,7 @@ public class Player<frameDelay> extends Entity {
                             gravity = 3.5;
                         }
                         else if(getBounds().intersects(e.getBounds())){
-                            die();
+                            die(1);
                         }
                     }
                     else if(e.koopaState == KoopaState.SHELL){
@@ -176,14 +205,15 @@ public class Player<frameDelay> extends Entity {
                             gravity = 3.5;
                         }
                         else if(getBounds().intersects(e.getBounds())){
-                            die();
+                            die(1);
                         }
                     }
                 }
 
                 else if(e.getId()==Id.goomba) {
                     if (getBoundsBottom().intersects(e.getBoundsTop())) {
-                        e.die();
+                        e.die(0);
+                        Main.stomp.play();
                     } else if (getBounds().intersects(e.getBounds())) {
                         if (state == PlayerState.BIG) {
                             state = PlayerState.SMALL;
@@ -192,7 +222,7 @@ public class Player<frameDelay> extends Entity {
                             x += width;
                             y += height;
                         } else if (state == PlayerState.SMALL) {
-                            die();
+                            die(1);
                         }
                     }
                 }//added for isSolid() command
@@ -217,7 +247,7 @@ public class Player<frameDelay> extends Entity {
                 frameDelay++;
                 if(frameDelay>=3){
                     frame++;
-                    if(frame>=5){
+                    if(frame>=4){
                         frame = 0;
                     }
                     frameDelay = 0;

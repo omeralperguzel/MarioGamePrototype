@@ -17,6 +17,9 @@ public abstract class Entity {
     public boolean jumping = false;
     public boolean falling = true;
 
+    //Added for mushroom differentiation
+    public int type;
+
     public boolean goingDownPipe = false;
 
     protected int frame = 0;
@@ -46,12 +49,21 @@ public abstract class Entity {
 
     public abstract void tick();
 
-    public void die(){
+    public void die(int isPlayer){
         handler.removeEntity(this);
-        Main.lives--;
-        Main.showDeathScreen = true;
 
-        if(Main.lives<=0) Main.gameOver = true;
+        if (isPlayer == 1) {
+            Main.lives--;
+            Main.showDeathScreen = true;
+            if(Main.lives<=0) {
+                Main.gameOver = true;
+                //Main.lives == 5;
+                // restartGame()
+                //Main.gameover.play();
+                }
+
+            Main.mariodies.play();
+            }
     }
 
     public int getX() {
@@ -80,6 +92,11 @@ public abstract class Entity {
 
     public void setVelY(int velY){
         this.velY = velY;
+    }
+
+    //mushroom type differentiation
+    public int getMushroomType() {
+        return type;
     }
 
     public Id getId(){

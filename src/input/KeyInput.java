@@ -21,19 +21,23 @@ public class KeyInput implements KeyListener  {
 
                 switch(key){
                     case KeyEvent.VK_W:
-
                         for(int q=0; q < Main.handler.tile.size(); q++){
                             Tile t = Main.handler.tile.get(q);
-                            if(t.getId() == Id.pipe){
+                            if(t.isSolid()){
+                                if(en.getBoundsBottom().intersects(t.getBounds())){
+                                    if(!en.jumping){
+                                        en.jumping = true;
+                                        en.gravity = 10.0;
+
+                                        Main.jump.play();
+                                    }
+                                }
+                                else if(t.getId() == Id.pipe){
                                 if(en.getBoundsBottom().intersects(t.getBounds())){
                                     if(!en.goingDownPipe) en.goingDownPipe = true;
                                 }
                             }
-                        }
-
-                        if(!en.jumping){
-                            en.jumping = true;
-                            en.gravity = 10.0;
+                          }
                         }
                         break;
 
@@ -62,6 +66,10 @@ public class KeyInput implements KeyListener  {
                     case KeyEvent.VK_ESCAPE:
                         System.exit(0);
                         break;
+
+                    case KeyEvent.VK_U:
+                        en.die(1);
+
                 }
             }
         }

@@ -67,22 +67,32 @@ public class Handler {
                 int red = (pixel >> 16) & 0xff;
                 int green = (pixel >> 8) & 0xff;
                 int blue = (pixel) & 0xff;
+
                 //complete black pixel for levels
                 if(red==0 && green==0 && blue==0) addTile(new Wall(x*64,y*64,64,64,true,Id.wall,this));
+
                 //complete blue pixel for player
                 if(red==0 && green==0 && blue==255) addEntity(new Player(x*64,y*64,64,64,false,Id.player,this));
-                //complete red pixel for mushroom
-                if(red==255 && green==0 && blue==0) addEntity(new Mushroom(x*64,y*64,64,64,true,Id.mushroom,this));
+                //complete red pixel for grow mushroom
+                if(red==255 && green==0 && blue==0) addEntity(new Mushroom(x*64,y*64,64,64,true,Id.mushroom,this,0));
+                //one green pixel for one up mushroom
+                if(red==10 && green==255 && blue==0) addEntity(new Mushroom(x*64,y*64,64,64,true,Id.mushroom,this,1));
                 //one orange pixel for goomba
                 if(red==255 && green==119 && blue==0) addEntity(new Goomba(x*64,y*64,64,64,true,Id.goomba,this));
-                //one yellow pixel for power up
-                if(red==255 && green==255 && blue==0) addTile(new PowerUpBlock(x*64,y*64,64,64,true,Id.powerUp,this, Main.mushroom));
+
+                //one yellow pixel for grow mushroom power up
+                if(red==255 && green==255 && blue==0) addTile(new PowerUpBlock(x*64,y*64,64,64,true,Id.powerUp,this, Main.mushroom,0));
+                //one yellow pixel for one up mushroom power up
+                if(red==255 && green==245 && blue==0) addTile(new PowerUpBlock(x*64,y*64,64,64,true,Id.powerUp,this, Main.mushroom,1));
+
                 //one green pixel for pipes
                 if(red==0 && (green>123 && green<129) && blue==0) addTile(new Pipe(x*64,y*64,64,64*15,true,Id.pipe,this, 128-green));
                 //one yellow pixel for coins
                 if(red==255 && green==250 && blue==0) addTile(new Coin(x*64,y*64,64,64,true,Id.coin,this));
                 //one green pixel for koopa
                 if(red==180 && green==250 && blue==180) addEntity(new Koopa(x*64,y*64,64,64,true,Id.koopa,this));
+                //one pixel for flag
+                if (red ==0 && green == 255 && blue ==0) addTile(new Flag(x*64,y*64,64,64*5,true,Id.flag,this));
 
             }
         }
