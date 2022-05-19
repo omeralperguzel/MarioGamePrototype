@@ -227,7 +227,9 @@ public class Main<second> extends Canvas implements Runnable{
                 */
                 //For Dark Souls references :D
                 g.drawImage(darksoulsyoudied, 0, 0, getWidth(), getHeight(), null);
+                //RESETTING INTEGER VALUES
                 secondscount = 0;
+                coins = 0;
                 lives = 5;
                 Main.gameover.play();
                 Main.backgroundmusic.stop();

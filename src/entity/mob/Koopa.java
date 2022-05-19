@@ -43,11 +43,11 @@ public class Koopa extends Entity {
         //same as player movement
         //left
         if(facing==0){
-            g.drawImage(Main.koopa[frame+4].getBufferedImage(),x,y,width,height,null);
+            g.drawImage(Main.koopa[frame].getBufferedImage(),x,y,width,height,null);
         }
         //right
         else if(facing==1){
-            g.drawImage(Main.koopa[frame].getBufferedImage(),x,y,width,height,null);
+            g.drawImage(Main.koopa[frame+4].getBufferedImage(),x,y,width,height,null);
         }
     }
 
@@ -59,12 +59,13 @@ public class Koopa extends Entity {
             setVelX(0);
 
             shellCount++;
-
+         }
             if (shellCount >= 400) {
                 shellCount = 0;
 
                 koopaState = KoopaState.WALKING;
             }
+
             if (koopaState == KoopaState.WALKING || koopaState == KoopaState.SPINNING) {
                 shellCount = 0;
 
@@ -111,9 +112,9 @@ public class Koopa extends Entity {
                         facing = 0;
                     }
                     //for bouncing off the wall
-
                 }
             }
+
             if (falling) {
                 gravity += 0.1;
                 setVelY((int) gravity);
@@ -129,6 +130,5 @@ public class Koopa extends Entity {
                     frameDelay = 0;
                 }
             }
-        }
     }
 }
