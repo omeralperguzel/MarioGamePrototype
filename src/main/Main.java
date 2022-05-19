@@ -26,10 +26,15 @@ public class Main<second> extends Canvas implements Runnable{
 
     private Thread thread;
     private boolean running = false;
-    private BufferedImage image;
+
+    //private BufferedImage image;
+    private static BufferedImage[] levels;
+
     private BufferedImage darksoulsyoudied;
 
     public int secondscount;
+
+    public static int level = 0;
 
     public static int coins = 0;
     public static int lives = 5;
@@ -50,13 +55,17 @@ public class Main<second> extends Canvas implements Runnable{
 
     public static Sprite groundblock;
     public static Sprite[] player;
+    public static Sprite[] playerjump;
     public static Sprite mushroom;
+    public static Sprite upMushroom;
     public static Sprite coin;
     public static Sprite powerUp;
     public static Sprite usedPowerUp;
     public static Sprite[] goomba;
     public static Sprite pipe;
     public static Sprite[] koopa;
+    public static Sprite[] koopashell;
+    public static Sprite[] flag;
     //had to think about that power up one day due to 2 character reasons
 
     public static Sounds backgroundmusic;
@@ -67,7 +76,7 @@ public class Main<second> extends Canvas implements Runnable{
     public static Sounds oneup;
     public static Sounds stomp;
     public static Sounds mushroomsound;
-
+    public static Sounds mysteryblockbreak;
 
     private synchronized void start() {
         if(running) return;
@@ -111,16 +120,27 @@ public class Main<second> extends Canvas implements Runnable{
         powerUp = new Sprite(sheet, 3,1);
         usedPowerUp = new Sprite(sheet, 1,1);
         mushroom = new Sprite(sheet,2, 1);
+        upMushroom = new Sprite(sheet,6,1);
         coin = new Sprite(sheet,5,1);
         pipe = new Sprite(sheet, 4,1);
 
-        player = new Sprite[10];
+        player = new Sprite[8];
+        playerjump = new Sprite[2];
         goomba = new Sprite[8];
         koopa = new Sprite[8];
+        koopashell = new Sprite[2];
+        flag = new Sprite[2];
+
+        levels = new BufferedImage[2];
+
         //PLAYER 1 SPRITES
         for(int i=0; i<player.length; i++){
-            player[i] = new Sprite(sheet,i+1,16);
+            player[i] = new Sprite(sheet,i+2,16);
         }
+        //PLAYER 1 JUMP SPRITES
+        playerjump[0] = new Sprite(sheet,1,16); //left
+        playerjump[1] = new Sprite(sheet,10,16); //right
+
         //GOOMBA SPRITES
         for(int i=0; i<goomba.length; i++){
             goomba[i] = new Sprite(sheet,i+1,15);
@@ -129,9 +149,19 @@ public class Main<second> extends Canvas implements Runnable{
         for(int i=0; i<koopa.length; i++){
             koopa[i] = new Sprite(sheet,i+1,14);
         }
+        //KOOPA SHELL SPRITES
+        for(int i=0; i<koopashell.length; i++){
+            koopashell[i] = new Sprite(sheet,i+9,14);
+        }
+        //FLAG SPRITES
+        for(int i=0; i<flag.length; i++){
+            flag[i] = new Sprite(sheet,i+7,1);
+        }
 
         try {
-            image = ImageIO.read(getClass().getResource("/leveltest0.png"));
+            //image = ImageIO.read(getClass().getResource("/leveltest0.png"));
+            levels[0] = ImageIO.read(getClass().getResource("/leveltest0.png"));
+            levels[1] = ImageIO.read(getClass().getResource("/leveltest1.png"));
             //background = ImageIO.read(getClass().getResource("/background.png"));
             background = ImageIO.read(getClass().getResource("/backgroundtest1.png"));
             darksoulsyoudied = ImageIO.read(getClass().getResource("/darksoulsyoudied.png"));
@@ -156,7 +186,7 @@ public class Main<second> extends Canvas implements Runnable{
         oneup = new Sounds("/audio/oneUp.wav");
         stomp = new Sounds("/audio/stomp.wav");
         mushroomsound = new Sounds("/audio/superMushroom.wav");
-
+        mysteryblockbreak = new Sounds("/audio/mysteryblockbreak.wav");
 
     }
 
@@ -209,7 +239,7 @@ public class Main<second> extends Canvas implements Runnable{
                 g.fillRect(0,0,getWidth()-0,getHeight()-0);
                 g.setColor(Color.WHITE);
                 //show lives
-                g.drawImage(Main.player[0].getBufferedImage(),WIDTH*4/2-120,HEIGHT*4/2-50,60,60,null);
+                g.drawImage(Main.playerjump[0].getBufferedImage(),WIDTH*4/2-120,HEIGHT*4/2-50,60,60,null);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString("x" + lives, WIDTH*4/2-30, HEIGHT*4/2);
                 if(playing) g.translate(cam.getX(),cam.getY());
@@ -259,7 +289,7 @@ public class Main<second> extends Canvas implements Runnable{
                 g.setFont(new Font("Pixel NES",Font.PLAIN,40));
                 g.drawString("Score: " + score(), getWidth()/2+20, 70);
                 //LIVE SYSTEM ADDITIONS
-                g.drawImage(Main.player[1].getBufferedImage(),getWidth()-172,23,60,60,null);
+                g.drawImage(Main.player[0].getBufferedImage(),getWidth()-172,23,60,60,null);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
                 g.drawString("x" + lives, getWidth()-100, 80);
                 //for rendering blocks only if show death screen is false
@@ -296,7 +326,7 @@ public class Main<second> extends Canvas implements Runnable{
             showDeathScreen = false;
             deathScreenTime = 0;
             handler.clearLevel();
-            handler.createLevel(image);
+            handler.createLevel(levels[level]);
         }
     }
 
@@ -306,6 +336,13 @@ public class Main<second> extends Canvas implements Runnable{
 
     public static int getFrameHeight(){
         return HEIGHT*SCALE;
+    }
+
+    public static void switchLevel() {
+        Main.level++;
+
+        handler.clearLevel();
+        handler.createLevel(levels[level]);
     }
 
     public static void main(String [] args){

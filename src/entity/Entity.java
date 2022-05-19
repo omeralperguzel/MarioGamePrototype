@@ -17,6 +17,9 @@ public abstract class Entity {
     public boolean jumping = false;
     public boolean falling = true;
 
+    //Added for mushroom differentiation
+    public int type;
+
     public boolean goingDownPipe = false;
 
     protected int frame = 0;
@@ -89,6 +92,11 @@ public abstract class Entity {
 
     public void setVelY(int velY){
         this.velY = velY;
+    }
+
+    //mushroom type differentiation
+    public int getMushroomType() {
+        return type;
     }
 
     public Id getId(){

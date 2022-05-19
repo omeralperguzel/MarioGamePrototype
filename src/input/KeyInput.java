@@ -66,6 +66,10 @@ public class KeyInput implements KeyListener  {
                     case KeyEvent.VK_ESCAPE:
                         System.exit(0);
                         break;
+
+                    case KeyEvent.VK_U:
+                        en.die(1);
+
                 }
             }
         }

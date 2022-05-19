@@ -31,15 +31,23 @@ public class Player<frameDelay> extends Entity {
     }
 
     public void render(Graphics g) {
-        //left
-        if(facing==0){
-            g.drawImage(Main.player[frame+5].getBufferedImage(),x,y,width,height,null);
-        }
-        //right
-        else if(facing==1){
-            g.drawImage(Main.player[frame].getBufferedImage(),x,y,width,height,null);
-        }
 
+        if(!jumping){
+            if(facing==0){//left
+                g.drawImage(Main.player[frame+4].getBufferedImage(),x,y,width,height,null);
+            }
+            else if(facing==1){//right
+                g.drawImage(Main.player[frame].getBufferedImage(),x,y,width,height,null);
+            }
+        }
+        else if(jumping){//left
+            if(facing==0){
+                g.drawImage(Main.playerjump[1].getBufferedImage(),x,y,width,height,null);
+            }
+            else if(facing==1){//right
+                g.drawImage(Main.playerjump[0].getBufferedImage(),x,y,width,height,null);
+            }
+        }
     }
 
     public void tick() {
@@ -99,24 +107,40 @@ public class Player<frameDelay> extends Entity {
                         setVelX(0);
                         x = t.getX() - t.width;
                     }
+
+                    if (getBounds().intersects(t.getBounds())){
+                        if(t.getId() == Id.flag){
+                            Main.switchLevel();
+                        }
+                    }
                 //}
             }
-        //EXPANSION FOR MUSHROOM
+        //EXPANSION FOR MUSHROOMS
             for(int i=0;i<handler.entity.size();i++){
                 Entity e = handler.entity.get(i);
 
                 if(e.getId()==Id.mushroom){
-                    if(getBounds().intersects(e.getBounds())){
-                        int tpX = getX();
-                        int tpY = getY();
-                        Main.mushroomsound.play();
-                        width*=2;
-                        height*=2;
-                        setX(tpX-width);
-                        setY(tpY-height);
-                        if (state == PlayerState.SMALL) state = PlayerState.BIG;
-                        e.die(0);
+                    switch(e.getMushroomType()){
+                        case 0: //Growth mushroom
+                            if(getBounds().intersects(e.getBounds())){
+                                int tpX = getX();
+                                int tpY = getY();
+                                Main.mushroomsound.play();
+                                width*=2;
+                                height*=2;
+                                setX(tpX-width);
+                                setY(tpY-height);
+                                if (state == PlayerState.SMALL) state = PlayerState.BIG;
+                                e.die(0);
+                            }
+                        case 1: //One up mushroom
+                            if(getBounds().intersects(e.getBounds())){
+                                Main.lives=Main.lives+1;
+                                Main.oneup.play();
+                                e.die(0);
+                            }
                     }
+
                 }
 
                 //PLAYER-COIN INTERACTION
@@ -223,7 +247,7 @@ public class Player<frameDelay> extends Entity {
                 frameDelay++;
                 if(frameDelay>=3){
                     frame++;
-                    if(frame>=5){
+                    if(frame>=4){
                         frame = 0;
                     }
                     frameDelay = 0;

@@ -42,12 +42,15 @@ public class Koopa extends Entity {
         //g.fillRect(getX(), getY(), width, height);
         //same as player movement
         //left
-        if(facing==0){
+        if(facing==0 && koopaState == koopaState.WALKING){
             g.drawImage(Main.koopa[frame].getBufferedImage(),x,y,width,height,null);
         }
         //right
-        else if(facing==1){
+        else if(facing==1 && koopaState == koopaState.WALKING){
             g.drawImage(Main.koopa[frame+4].getBufferedImage(),x,y,width,height,null);
+        }
+        else{
+            g.drawImage(Main.koopashell[frame].getBufferedImage(),x,y,width,height,null);
         }
     }
 
@@ -122,9 +125,17 @@ public class Koopa extends Entity {
 
             if (velX != 0) {
                 frameDelay++;
-                if (frameDelay >= 10) {
+                if (frameDelay >= 10 && koopaState == koopaState.WALKING) {
                     frame++;
                     if (frame >= 3) {
+                        frame = 0;
+                    }
+                    frameDelay = 0;
+                }
+                //because of the koopashell array can't be higher than 2 I had to reinitialize it with a different statement
+                else if (frameDelay >= 10 && (koopaState == koopaState.SHELL || koopaState == koopaState.SPINNING)) {
+                    frame++;
+                    if (frame >= 2) {
                         frame = 0;
                     }
                     frameDelay = 0;
