@@ -46,6 +46,7 @@ public class Main<second> extends Canvas implements Runnable{
     public static boolean playing = false;
 
     private static BufferedImage background;
+    private static BufferedImage background2;
 
     public static Handler handler;
     public static SpriteSheet sheet;
@@ -68,7 +69,7 @@ public class Main<second> extends Canvas implements Runnable{
     public static Sprite[] flag;
     //had to think about that power up one day due to 2 character reasons
 
-    public static Sounds backgroundmusic;
+    public static Sounds[] backgroundmusic;
     public static Sounds coinsound;
     public static Sounds gameover;
     public static Sounds jump;
@@ -77,6 +78,9 @@ public class Main<second> extends Canvas implements Runnable{
     public static Sounds stomp;
     public static Sounds mushroomsound;
     public static Sounds mysteryblockbreak;
+
+    public static void showDeathScreen() {
+    }
 
     private synchronized void start() {
         if(running) return;
@@ -132,6 +136,7 @@ public class Main<second> extends Canvas implements Runnable{
         flag = new Sprite[2];
 
         levels = new BufferedImage[2];
+        backgroundmusic = new Sounds[2];
 
         //PLAYER 1 SPRITES
         for(int i=0; i<player.length; i++){
@@ -164,6 +169,7 @@ public class Main<second> extends Canvas implements Runnable{
             levels[1] = ImageIO.read(getClass().getResource("/leveltest1.png"));
             //background = ImageIO.read(getClass().getResource("/background.png"));
             background = ImageIO.read(getClass().getResource("/backgroundtest1.png"));
+            background2 = ImageIO.read(getClass().getResource("/backgroundtest2.png"));
             darksoulsyoudied = ImageIO.read(getClass().getResource("/darksoulsyoudied.png"));
         } catch (IOException e){
             e.printStackTrace();
@@ -178,7 +184,8 @@ public class Main<second> extends Canvas implements Runnable{
         //handler.addTile(new Wall(200,200,64,64,true,Id.wall,handler));
 
         //SOUNDS
-        backgroundmusic = new Sounds("/audio/background.wav");
+        backgroundmusic[0] = new Sounds("/audio/background.wav");
+        backgroundmusic[1] = new Sounds("/audio/marioworldsubcastle.wav");
         coinsound = new Sounds("/audio/coin.wav");
         gameover = new Sounds("/audio/gameover.wav");
         jump = new Sounds("/audio/jump.wav");
@@ -239,13 +246,18 @@ public class Main<second> extends Canvas implements Runnable{
                 g.fillRect(0,0,getWidth()-0,getHeight()-0);
                 g.setColor(Color.WHITE);
                 //show lives
-                g.drawImage(Main.playerjump[0].getBufferedImage(),WIDTH*4/2-120,HEIGHT*4/2-50,60,60,null);
+                g.drawImage(Main.playerjump[0].getBufferedImage(),WIDTH*4/2-115,HEIGHT*4/2-30,60,60,null);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
-                g.drawString("x" + lives, WIDTH*4/2-30, HEIGHT*4/2);
+                g.drawString("x" + lives, WIDTH*4/2-25, HEIGHT*4/2+20);
+                g.drawString("LEVEL " + (level+1), WIDTH*4/2-150, HEIGHT*4/2-80);
                 if(playing) g.translate(cam.getX(),cam.getY());
-                if(playing) handler.render(g);
+                //if(playing) handler.render(g);
 
-                backgroundmusic.play();
+                if(level == 0) backgroundmusic[0].play();
+                if(level == 1){
+                    backgroundmusic[1].play();
+                    backgroundmusic[0].stop();
+                }
             }
             else{
                 /*g.setColor(new Color(0,0,0));
@@ -262,7 +274,7 @@ public class Main<second> extends Canvas implements Runnable{
                 coins = 0;
                 lives = 5;
                 Main.gameover.play();
-                Main.backgroundmusic.stop();
+                Main.backgroundmusic[level].stop();
             }
         }
         else if(!playing) launcher.render(g);
@@ -272,9 +284,12 @@ public class Main<second> extends Canvas implements Runnable{
 
 
             if(!showDeathScreen && playing){
+
                 //if(playing) g.translate(cam.getX(),cam.getY());
                 //if(playing) handler.render(g);
-                g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+                if(level == 0) g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+                if(level == 1) g.drawImage(background2, 0, 0, getWidth(), getHeight(), null);
+
                 //if(playing) g.translate(cam.getX(),cam.getY());
                 //if(playing) handler.render(g);
                 //COIN ADDITIONS
@@ -342,6 +357,8 @@ public class Main<second> extends Canvas implements Runnable{
         Main.level++;
 
         handler.clearLevel();
+        Main.backgroundmusic[level].stop();
+        showDeathScreen = true;
         handler.createLevel(levels[level]);
     }
 
