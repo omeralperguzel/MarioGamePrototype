@@ -37,7 +37,7 @@ public class Main<second> extends Canvas implements Runnable{
     public static int level = 0;
 
     public static int coins = 0;
-    public static int lives = 5;
+    public static int lives = 2500;
     //time for showing game over screen on display
     public static int deathScreenTime = 0;
 
@@ -248,7 +248,7 @@ public class Main<second> extends Canvas implements Runnable{
                 //show lives
                 g.drawImage(Main.playerjump[0].getBufferedImage(),WIDTH*4/2-115,HEIGHT*4/2-30,60,60,null);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
-                g.drawString("x" + lives, WIDTH*4/2-25, HEIGHT*4/2+20);
+                g.drawString("x" + (lives/500), WIDTH*4/2-25, HEIGHT*4/2+20);
                 g.drawString("LEVEL " + (level+1), WIDTH*4/2-150, HEIGHT*4/2-80);
                 if(playing) g.translate(cam.getX(),cam.getY());
                 //if(playing) handler.render(g);
@@ -272,7 +272,7 @@ public class Main<second> extends Canvas implements Runnable{
                 //RESETTING INTEGER VALUES
                 secondscount = 0;
                 coins = 0;
-                lives = 5;
+                lives = 2500;
                 Main.gameover.play();
                 Main.backgroundmusic[level].stop();
             }
@@ -306,7 +306,7 @@ public class Main<second> extends Canvas implements Runnable{
                 //LIVE SYSTEM ADDITIONS
                 g.drawImage(Main.player[0].getBufferedImage(),getWidth()-172,23,60,60,null);
                 g.setFont(new Font("Pixel NES",Font.PLAIN,45));
-                g.drawString("x" + lives, getWidth()-100, 80);
+                g.drawString("x" + (lives/500), getWidth()-100, 80);
                 //for rendering blocks only if show death screen is false
                 if(playing) g.translate(cam.getX(),cam.getY());
                 if(playing) handler.render(g);

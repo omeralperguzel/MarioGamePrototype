@@ -3,12 +3,14 @@ package input;
 import entity.Entity;
 import main.Id;
 import main.Main;
+import states.LauncherState;
 import tile.Tile;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 
+import static graphics.GUI.Launcher.launcherState;
 import static main.Main.launcher;
 
 public class KeyInput implements KeyListener  {
@@ -65,6 +67,12 @@ public class KeyInput implements KeyListener  {
 
                     case KeyEvent.VK_ESCAPE:
                         System.exit(0);
+                        break;
+
+                    case KeyEvent.VK_BACK_SPACE:
+                        if(launcherState == LauncherState.CREDITS || launcherState == LauncherState.HELP){
+                            launcherState = LauncherState.BASE;
+                        }
                         break;
 
                     case KeyEvent.VK_U:

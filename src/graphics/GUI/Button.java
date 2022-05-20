@@ -1,8 +1,12 @@
 package graphics.GUI;
 
 import main.Main;
+import states.LauncherState;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Locale;
 
 public class Button {
@@ -11,6 +15,17 @@ public class Button {
     public int width, height;
 
     public String label;
+
+    public BufferedImage menubackgroundblock1;
+
+    {
+    try {
+        menubackgroundblock1 = ImageIO.read(getClass().getResource("/menubackgroundblock1.png"));
+    }
+    catch(IOException e) {
+        e.printStackTrace();
+    }
+}
 
     public Button(int x, int y, int width, int height, String label) {
         this.x = x;
@@ -34,8 +49,8 @@ public class Button {
 
     public void triggerEvent(){
         if(getLabel().toLowerCase().contains("play")) Main.playing = true;
-        if(getLabel().toLowerCase().contains("help")) //return graphics.GUI.Launcher.drawHelpScreen();
-        if(getLabel().toLowerCase().contains("credits")) //return graphics.GUI.Launcher.drawHelpScreen();
+        if(getLabel().toLowerCase().contains("help")); Launcher.launcherState = LauncherState.HELP; //return graphics.GUI.Launcher.drawHelpScreen()
+        if(getLabel().toLowerCase().contains("credits")) Launcher.launcherState = LauncherState.CREDITS;  //return graphics.GUI.Launcher.drawHelpScreen()
         if(getLabel().toLowerCase().contains("exit")) System.exit(0);
     }
 

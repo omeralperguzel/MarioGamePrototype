@@ -135,7 +135,7 @@ public class Player<frameDelay> extends Entity {
                             }
                         case 1: //One up mushroom
                             if(getBounds().intersects(e.getBounds())){
-                                Main.lives=Main.lives+1;
+                                Main.lives=Main.lives+500;
                                 Main.oneup.play();
                                 e.die(0);
                             }
