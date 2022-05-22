@@ -77,7 +77,8 @@ public class Player<frameDelay> extends Entity {
                     //y = t.getY()+t.height;
                     if(jumping && !goingDownPipe){
                         jumping = false;
-                        gravity -= 0.4;
+                        if(state == PlayerState.SMALL) gravity -= 0.2;
+                        if(state == PlayerState.BIG) gravity -= 0.4;
                         falling = true;
                     }
                     if(t.getId()==Id.powerUp){
@@ -232,7 +233,8 @@ public class Player<frameDelay> extends Entity {
             //then whatever entity it scans it will create an entity object out (part 19)
 
             if (jumping && !goingDownPipe) {
-                gravity -= 0.1;
+                if(state == PlayerState.SMALL) gravity -= 0.2;
+                if(state == PlayerState.BIG) gravity -=0.1;
                 setVelY((int) -gravity);
                 if (gravity <= 0.0) {
                     jumping = false;

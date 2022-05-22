@@ -20,7 +20,8 @@ public class Flag extends Tile {
         g.drawImage(Main.flag[0].getBufferedImage(), getX(), getY()+64, width, 64 , null);
         g.drawImage(Main.flag[0].getBufferedImage(), getX(), getY()+128, width, 64 , null);
         g.drawImage(Main.flag[0].getBufferedImage(), getX(), getY()+192, width, 64 , null);
-        g.drawImage(Main.flag[0].getBufferedImage() , getX() , height-64, width , 64 , null);
+        g.drawImage(Main.flag[0].getBufferedImage() , getX() , getY()+256, width , 64 , null);
+        //g.drawImage(Main.flag[0].getBufferedImage() , getX() , height-64, width , 64 , null);
     }
 
     public void tick() {

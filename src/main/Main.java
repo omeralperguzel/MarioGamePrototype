@@ -166,7 +166,7 @@ public class Main<second> extends Canvas implements Runnable{
         try {
             //image = ImageIO.read(getClass().getResource("/leveltest0.png"));
             levels[0] = ImageIO.read(getClass().getResource("/leveltest0.png"));
-            levels[1] = ImageIO.read(getClass().getResource("/leveltest1.png"));
+            levels[1] = ImageIO.read(getClass().getResource("/level0.png"));
             //background = ImageIO.read(getClass().getResource("/background.png"));
             background = ImageIO.read(getClass().getResource("/backgroundtest1.png"));
             background2 = ImageIO.read(getClass().getResource("/backgroundtest2.png"));
@@ -272,7 +272,7 @@ public class Main<second> extends Canvas implements Runnable{
                 //RESETTING INTEGER VALUES
                 secondscount = 0;
                 coins = 0;
-                lives = 2500;
+                //lives = 2500;
                 Main.gameover.play();
                 Main.backgroundmusic[level].stop();
             }
