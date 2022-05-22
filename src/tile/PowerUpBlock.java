@@ -27,7 +27,11 @@ public class PowerUpBlock extends Tile{
     public void render(Graphics g) {
         if(!poppedUp) g.drawImage(Main.powerUp.getBufferedImage(), x, spriteY, width, height, null);
         if(!activated) g.drawImage(Main.powerUp.getBufferedImage(), x, y, width, height,null);
-        else g.drawImage(Main.usedPowerUp.getBufferedImage(), x, y, width, height, null);
+        else{
+            if(Main.level == 0) g.drawImage(Main.usedPowerUp.getBufferedImage(), x, y, width, height, null);
+            if(Main.level == 1) g.drawImage(Main.usedPowerUp2.getBufferedImage(), x, y, width, height, null);
+
+        }
     }
 
     public void tick() {

@@ -55,6 +55,7 @@ public class Main<second> extends Canvas implements Runnable{
     public static MouseInput mouse;
 
     public static Sprite groundblock;
+    public static Sprite darkgroundblock;
     public static Sprite[] player;
     public static Sprite[] playerjump;
     public static Sprite mushroom;
@@ -62,6 +63,7 @@ public class Main<second> extends Canvas implements Runnable{
     public static Sprite coin;
     public static Sprite powerUp;
     public static Sprite usedPowerUp;
+    public static Sprite usedPowerUp2;
     public static Sprite[] goomba;
     public static Sprite pipe;
     public static Sprite[] koopa;
@@ -120,9 +122,11 @@ public class Main<second> extends Canvas implements Runnable{
         addMouseMotionListener(mouse);
 
         groundblock = new Sprite(sheet,1,1);
+        darkgroundblock = new Sprite(sheet,1,2);
         //POWER UP SPRITES
         powerUp = new Sprite(sheet, 3,1);
         usedPowerUp = new Sprite(sheet, 1,1);
+        usedPowerUp2 = new Sprite(sheet, 1,2);
         mushroom = new Sprite(sheet,2, 1);
         upMushroom = new Sprite(sheet,6,1);
         coin = new Sprite(sheet,5,1);

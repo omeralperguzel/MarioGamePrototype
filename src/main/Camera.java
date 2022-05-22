@@ -9,7 +9,7 @@ public class Camera {
     public void tick(Entity player){
         setX(-player.getX() + Main.WIDTH/2);
         if(Main.level == 0) setY(-player.getY() + Main.HEIGHT/2+100);
-        if(Main.level == 1) setY(-player.getY() + Main.HEIGHT/2+400);
+        if(Main.level == 1) setY(-player.getY() + Main.HEIGHT/2+390);
     }
 
     public int getX() {
