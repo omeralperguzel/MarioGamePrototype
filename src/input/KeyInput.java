@@ -6,12 +6,13 @@ import main.Main;
 import states.LauncherState;
 import tile.Tile;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import static graphics.GUI.Launcher.launcherState;
-import static main.Main.launcher;
+import static main.Main.*;
 
 public class KeyInput implements KeyListener  {
 
@@ -35,7 +36,7 @@ public class KeyInput implements KeyListener  {
                                     }
                                 }
                                 else if(t.getId() == Id.pipe){
-                                if(en.getBoundsBottom().intersects(t.getBounds())){
+                                if(en.getBoundsTop().intersects(t.getBounds())){
                                     if(!en.goingDownPipe) en.goingDownPipe = true;
                                 }
                             }
@@ -73,11 +74,48 @@ public class KeyInput implements KeyListener  {
                         if(launcherState == LauncherState.CREDITS || launcherState == LauncherState.HELP){
                             launcherState = LauncherState.BASE;
                         }
+                        if(launcherState == LauncherState.THANKS){
+                            launcherState = LauncherState.BASE;
+                        }
                         break;
+
+                        //Debug keyboard key shortcuts initialized at the deadline day
 
                     case KeyEvent.VK_U:
                         en.die(1);
+                        break;
 
+                    ///*
+                    case KeyEvent.VK_P:
+
+                        if(Main.presentationmode == true){
+                            Main.presentationmode = false;
+                            Main.oneup.play();
+                        }
+                        else if(Main.presentationmode == false){
+                            Main.presentationmode = true;
+                            Main.coinsound.play();
+                        }
+                        break;
+                    //*/
+                    case KeyEvent.VK_I:
+                        if (playing == true){
+                            Main.backgroundmusic[Main.level].stop();
+                            playing = false;
+                            launcherState = LauncherState.BASE;
+                            level = 0;
+                        }
+                        break;
+                    case KeyEvent.VK_L:
+                        //switchLevel();
+                        Main.backgroundmusic[Main.level].stop();
+                        Main.level++;
+                        handler.clearLevel();
+                        handler.createLevel(Main.levels[level]);
+                        Main.backgroundmusic[Main.level].play();
+                        //Main.level=Main.level+1;
+                        break;
+                        //*/
                 }
             }
         }

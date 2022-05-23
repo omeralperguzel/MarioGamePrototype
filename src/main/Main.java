@@ -6,6 +6,7 @@ import graphics.Sprite;
 import graphics.SpriteSheet;
 import input.KeyInput;
 import input.MouseInput;
+import states.LauncherState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
+import static graphics.GUI.Launcher.launcherState;
 
 //uses abstract windowing toolkit libraries for window dimensions etc.
 public class Main<second> extends Canvas implements Runnable{
@@ -28,13 +31,16 @@ public class Main<second> extends Canvas implements Runnable{
     private boolean running = false;
 
     //private BufferedImage image;
-    private static BufferedImage[] levels;
+    public static BufferedImage[] levels;
 
     private BufferedImage darksoulsyoudied;
+    private BufferedImage thankyouforplaying;
 
     public int secondscount;
 
     public static int level = 0;
+
+    public static boolean presentationmode = true;
 
     public static int coins = 0;
     public static int lives = 2500;
@@ -47,6 +53,7 @@ public class Main<second> extends Canvas implements Runnable{
 
     private static BufferedImage background;
     private static BufferedImage background2;
+    private static BufferedImage background3;
 
     public static Handler handler;
     public static SpriteSheet sheet;
@@ -139,8 +146,8 @@ public class Main<second> extends Canvas implements Runnable{
         koopashell = new Sprite[2];
         flag = new Sprite[2];
 
-        levels = new BufferedImage[2];
-        backgroundmusic = new Sounds[2];
+        levels = new BufferedImage[4];
+        backgroundmusic = new Sounds[4];
 
         //PLAYER 1 SPRITES
         for(int i=0; i<player.length; i++){
@@ -171,10 +178,14 @@ public class Main<second> extends Canvas implements Runnable{
             //image = ImageIO.read(getClass().getResource("/leveltest0.png"));
             levels[0] = ImageIO.read(getClass().getResource("/leveltest0.png"));
             levels[1] = ImageIO.read(getClass().getResource("/level0.png"));
+            levels[2] = ImageIO.read(getClass().getResource("/levelthanks.png"));
+            levels[3] = ImageIO.read(getClass().getResource("/levelthanks.png"));
             //background = ImageIO.read(getClass().getResource("/background.png"));
             background = ImageIO.read(getClass().getResource("/backgroundtest1.png"));
             background2 = ImageIO.read(getClass().getResource("/backgroundtest2.png"));
+            background3 = ImageIO.read(getClass().getResource("/backgroundtest3.png"));
             darksoulsyoudied = ImageIO.read(getClass().getResource("/darksoulsyoudied.png"));
+            //thankyouforplaying = ImageIO.read(getClass().getResource("/thankyouscreen.png"));
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -190,6 +201,8 @@ public class Main<second> extends Canvas implements Runnable{
         //SOUNDS
         backgroundmusic[0] = new Sounds("/audio/background.wav");
         backgroundmusic[1] = new Sounds("/audio/marioworldsubcastle.wav");
+        backgroundmusic[2] = new Sounds("/audio/marioworldend.wav");
+        backgroundmusic[3] = new Sounds("/audio/jump.wav");
         coinsound = new Sounds("/audio/coin.wav");
         gameover = new Sounds("/audio/gameover.wav");
         jump = new Sounds("/audio/jump.wav");
@@ -262,6 +275,11 @@ public class Main<second> extends Canvas implements Runnable{
                     backgroundmusic[1].play();
                     backgroundmusic[0].stop();
                 }
+                if(level == 2){
+                    backgroundmusic[2].play();
+                    backgroundmusic[1].stop();
+                }
+
             }
             else{
                 /*g.setColor(new Color(0,0,0));
@@ -293,6 +311,8 @@ public class Main<second> extends Canvas implements Runnable{
                 //if(playing) handler.render(g);
                 if(level == 0) g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
                 if(level == 1) g.drawImage(background2, 0, 0, getWidth(), getHeight(), null);
+                if(level == 2) g.drawImage(background3, 0, 0, getWidth(), getHeight(), null);
+                if(level == 3) g.drawImage(background3, 0, 0, getWidth(), getHeight(), null);
 
                 //if(playing) g.translate(cam.getX(),cam.getY());
                 //if(playing) handler.render(g);
@@ -359,11 +379,24 @@ public class Main<second> extends Canvas implements Runnable{
 
     public static void switchLevel() {
         Main.level++;
-
         handler.clearLevel();
-        Main.backgroundmusic[level].stop();
-        showDeathScreen = true;
-        handler.createLevel(levels[level]);
+        if(!presentationmode){
+            Main.backgroundmusic[level-1].stop();
+            showDeathScreen = true;
+            handler.createLevel(levels[level]);
+        }
+        if(playing){
+            if(presentationmode || level>=3){
+                Main.backgroundmusic[level-1].stop();
+                //gameOver = false;
+                //Main.oneup.play();
+                launcherState = LauncherState.THANKS;
+                playing = false;
+                Main.level=0;
+            }
+        }
+
+
     }
 
     public static void main(String [] args){

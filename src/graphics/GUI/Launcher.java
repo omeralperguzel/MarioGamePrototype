@@ -17,6 +17,7 @@ public class Launcher{
     public BufferedImage[] mainmenu;
     public BufferedImage menubackgroundblock1;
     public BufferedImage test;
+    public BufferedImage thankyouforplaying;
     public static LauncherState launcherState;
 
     {
@@ -25,6 +26,7 @@ public class Launcher{
             //mainmenu[0] = ImageIO.read(getClass().getResource("/mainmenu1.png"));
             //mainmenu[1] = ImageIO.read(getClass().getResource("/menubackgroundblock1.png"));
             menubackgroundblock1 = ImageIO.read(getClass().getResource("/menubackgroundblock1.png"));
+            thankyouforplaying = ImageIO.read(getClass().getResource("/thankyouscreen.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,6 +54,7 @@ public class Launcher{
         //g.fillRect(0, 0, game.getFrameWidth(), game.getFrameHeight());
         g.drawImage(mainmenu1, 0,0,game.getFrameWidth(),game.getFrameHeight(), null);
 
+
         for(int i=0; i<buttons.length; i++){
             buttons[i].render(g);
         }
@@ -61,8 +64,16 @@ public class Launcher{
             g.setFont(new Font("Pixel NES",Font.PLAIN,35));
             g.drawString("Use WASD for move", game.getFrameWidth()/6+33, 120);
             g.drawString("Esc for quick shutdown", game.getFrameWidth()/6+33, 180);
-            g.drawString("For Debug purposes press", game.getFrameWidth()/6+33, 260);
-            g.drawString("U for calling death screen", game.getFrameWidth()/6+33, 320);
+            g.setFont(new Font("Pixel NES",Font.PLAIN,25));
+            g.drawString("For Debug purposes press", game.getFrameWidth()/6+33, 240);
+            g.drawString("I for return to main menu", game.getFrameWidth()/6+33, 290);
+            if(!Main.presentationmode){
+                g.setFont(new Font("Pixel NES",Font.PLAIN,25));
+                g.drawString("U for calling death screen", game.getFrameWidth()/6+33, 340);
+                g.drawString("L for level switching", game.getFrameWidth()/6+33, 390);
+                g.drawString("P for presentation switch", game.getFrameWidth()/6+33, 440);
+            }
+            g.setFont(new Font("Pixel NES",Font.PLAIN,35));
             g.drawString("Press backspace to return", game.getFrameWidth()/6+29, 520);
         }
 
@@ -81,14 +92,12 @@ public class Launcher{
             g.drawString("Press backspace to return", game.getFrameWidth()/6+29, 520);
         }
 
+        if(launcherState == THANKS){
+            g.drawImage(thankyouforplaying, 0, 0, game.getFrameWidth(), game.getFrameHeight(), null);
+            Main.oneup.play();
+
+            //launcherState = launcherState.BASE;
+        }
     }
 
-
-    private void drawCreditsScreen(Graphics g){
-
-    }
-
-    /*private void drawLevelSelectScreen(Graphics g){
-
-    }*/
 }

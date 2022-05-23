@@ -1,5 +1,5 @@
 package states;
 
 public enum LauncherState {
-    BASE, HELP, CREDITS, LEVELSELECT
+    BASE, HELP, CREDITS, LEVELSELECT, THANKS
 }

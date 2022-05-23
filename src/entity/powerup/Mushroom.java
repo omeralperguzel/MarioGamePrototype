@@ -27,7 +27,7 @@ public class Mushroom extends Entity {
     }
 
     public void render(Graphics g){
-        g.drawImage(Main.mushroom.getBufferedImage(), x, y, width, height, null);
+        //g.drawImage(Main.mushroom.getBufferedImage(), x, y, width, height, null);
 
         switch(getMushroomType()) {
             case 0:
@@ -52,8 +52,8 @@ public class Mushroom extends Entity {
                     if (falling) falling = false;
                 }
                 else if (!falling) {
-                        gravity = 0.8;
-                        falling = true;
+                    gravity = 0.8;
+                    falling = true;
                 }
                 if (getBoundsLeft().intersects(t.getBounds())) {
                     setVelX(5);

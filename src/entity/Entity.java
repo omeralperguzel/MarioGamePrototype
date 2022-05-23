@@ -60,10 +60,10 @@ public abstract class Entity {
                 //Main.lives == 5;
                 // restartGame()
                 //Main.gameover.play();
-                }
+            }
 
             Main.mariodies.play();
-            }
+        }
     }
 
     public int getX() {

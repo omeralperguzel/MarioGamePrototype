@@ -14,6 +14,8 @@ public class Wall extends Tile{
     public void render(Graphics g) {
         if(Main.level == 0) g.drawImage(Main.groundblock.getBufferedImage(),x,y,width,height,null);
         if(Main.level == 1) g.drawImage(Main.darkgroundblock.getBufferedImage(),x,y,width,height,null);
+        if(Main.level == 2) g.drawImage(Main.darkgroundblock.getBufferedImage(),x,y,width,height,null);
+        if(Main.level == 3) g.drawImage(Main.darkgroundblock.getBufferedImage(),x,y,width,height,null);
     }
 
     public void tick() {
