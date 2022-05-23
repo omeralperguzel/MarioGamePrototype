@@ -226,7 +226,7 @@ public class Player<frameDelay> extends Entity {
                     frameDelay = 0;
                 }
             }
-            if(goingDownPipe) {
+            if(goingDownPipe && !falling) {
                 for(int i=0; i < Main.handler.tile.size(); i++){
                     Tile t = Main.handler.tile.get(i);
                     if(t.getId() == Id.pipe){
